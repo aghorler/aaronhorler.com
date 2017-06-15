@@ -47,10 +47,9 @@
     <meta name="theme-color" content="#102a45">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
     <![endif]-->
 
 </head>
@@ -164,7 +163,7 @@
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" vhost_combined
     LogFormat "%v %h %l %u %t \"%r\" %>s %b" vhost_common
 
-    # Standard Let's Encrypt configuration
+    # Standard Let's Encrypt configuration.
     SSLCertificateFile /etc/letsencrypt/live/report.example.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/report.example.com/privkey.pem
 
@@ -215,7 +214,7 @@
     }
 ?&gt;</code></pre>
 
-            <p>This requires you have PHP installed and setup, and a mailing program like Sendmail. <a href="/articles/sendmail.html">See here</a> for instructions on configuring Sendmail to use TLS.</p>
+            <p>This requires you have PHP installed and setup, and a mailing program like Sendmail. <a class="visible-link" href="/articles/sendmail.html">See here</a> for instructions on configuring Sendmail to use TLS.</p>
 
             <p>Finally, set the correct permisions and (optionally) owner.</p>
 
@@ -225,7 +224,7 @@
 
             <h4>4. Implement the relevant security headers on your primary host/s.</h4>
 
-            <p>The report-uri parameter is supported by <em><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning">Public-Key-Pins</a></em>, <em><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins-Report-Only">Public-Key-Pins-Report-Only</a></em>, <em><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content-Security-Policy</a></em>, <em><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only">Content-Security-Policy-Report-Only</a></em>, <em><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">X-XSS-Protection</a></em>, and <em><a href="https://scotthelme.co.uk/a-new-security-header-expect-ct/">Expect-CT</a></em>.</p><br>
+            <p>The report-uri parameter is supported by <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning">Public-Key-Pins</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins-Report-Only">Public-Key-Pins-Report-Only</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content-Security-Policy</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only">Content-Security-Policy-Report-Only</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">X-XSS-Protection</a></em>, and <em><a class="visible-link" href="https://scotthelme.co.uk/a-new-security-header-expect-ct/">Expect-CT</a></em>.</p><br>
 
             <h5>Public-Key-Pins-Report-Only</h5>
 
@@ -233,7 +232,7 @@
 
             <p>Public-Key-Pins-Report-Only will notify you of a violation, but will not interfere with the user at all.</p>
 
-            <p>For Let's Encrypt it's <a href="https://community.letsencrypt.org/t/hpkp-best-practices-if-you-choose-to-implement/4625">recommended</a> you pin <em>ISRG Root X1</em>, <em>Let’s Encrypt Authority X3</em>, and <em>Let’s Encrypt Authority X4</em>.</p>
+            <p>For Let's Encrypt it's <a class="visible-link" href="https://community.letsencrypt.org/t/hpkp-best-practices-if-you-choose-to-implement/4625">recommended</a> you pin <em>ISRG Root X1</em>, <em>Let’s Encrypt Authority X3</em>, and <em>Let’s Encrypt Authority X4</em>.</p>
 
             <p>To generate the hashes, run these three commands.</p>
 
@@ -281,7 +280,7 @@
                 <div class="row">
                     <div class="footer-col col-md-4">
                         <h3>Location</h3>
-                        <p><a class="light-link" href="https://en.wikipedia.org/wiki/John_Batman">Batmania</a>.<p>
+                        <p><a class="light-link" href="https://www.youtube.com/watch?v=QoHSPRslJXs">Melbourne</a>.</p>
                     </div>
                     <div class="footer-col col-md-4">
                         <h3>Around the Web</h3>

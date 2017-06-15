@@ -47,10 +47,9 @@
     <meta name="theme-color" content="#102a45s">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
     <![endif]-->
 
 </head>
@@ -140,7 +139,7 @@
 
                 <p>If the above command produces an error, you need to upgrade to a newer version of Apache.</p>
 
-                <p>Using apt, add <a href="https://launchpad.net/~ondrej/+archive/ubuntu/apache2">Ondřej Surý's Apache2 PPA</a> and upgrade.</p>
+                <p>Using apt, add <a class="visible-link" href="https://launchpad.net/~ondrej/+archive/ubuntu/apache2">Ondřej Surý's Apache2 PPA</a> and upgrade.</p>
 
                 <p><code>sudo add-apt-repository ppa:ondrej/apache2</code></p>
 
@@ -158,7 +157,7 @@
 
                 <h3>Running Let's Encrypt</h3>
 
-                <p>This requires you've setup at least one Apache VirtualHost. See <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04" title="I'm not affiliated with Digital Ocean."> this</a> guide.</p>
+                <p>This requires you've setup at least one Apache VirtualHost. See <a class="visible-link" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04" title="I'm not affiliated with Digital Ocean."> this</a> guide.</p>
 
                 <h4>1. Install Let's Encrypt</h4>
 
@@ -292,7 +291,7 @@
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" vhost_combined
     LogFormat "%v %h %l %u %t \"%r\" %>s %b" vhost_common
 
-    # Standard Let's Encrypt configuration
+    # Standard Let's Encrypt configuration.
     # Remove this if you're using ECDSA.
     SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
@@ -304,7 +303,7 @@
 &lt;/VirtualHost&gt;
 &lt;/IfModule&gt;</code></pre>
 
-                <p>This configuration complies with Mozilla's <em>modern</em> SSL/TLS recommendations. You can find the <em>intermediate</em> recommendations for <em>SSLProtocol</em> and <em>SSLCipherSuite</em> <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">here</a>.</p>
+                <p>This configuration complies with Mozilla's <em>modern</em> SSL/TLS recommendations. You can find the <em>intermediate</em> recommendations for <em>SSLProtocol</em> and <em>SSLCipherSuite</em> <a class="visible-link" href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">here</a>.</p>
 
                 <p>The <em>modern</em> recommendations will prevent access from certain older clients by, for example, disabling every SSL/TLS protocol except TLS 1.2.</p><br>
 
@@ -314,13 +313,13 @@
 
                 <p><code>Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"</code></p>
 
-                <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy as part of future browser releases.</p>
+                <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a class="visible-link" href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy as part of future browser releases.</p>
 
                 <h5>Content Security Policy (CSP)</h5>
 
                 <p><code>Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';</code></p>
 
-                <p>Instruct browsers what resources are allowed. Refer to <a href="https://content-security-policy.com/">this</a> for all options.</p>
+                <p>Instruct browsers what resources are allowed. Refer to <a class="visible-link" href="https://content-security-policy.com/">this</a> for all options.</p>
 
                 <h5>Referrer-Policy</h5>
 
@@ -385,7 +384,7 @@ allow_url_include = Off
                 <div class="row">
                     <div class="footer-col col-md-4">
                         <h3>Location</h3>
-                        <p><a class="light-link" href="https://en.wikipedia.org/wiki/John_Batman">Batmania</a>.<p>
+                        <p><a class="light-link" href="https://www.youtube.com/watch?v=QoHSPRslJXs">Melbourne</a>.</p>
                     </div>
                     <div class="footer-col col-md-4">
                         <h3>Around the Web</h3>

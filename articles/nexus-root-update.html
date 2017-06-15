@@ -6,15 +6,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Using Let's Encrypt to secure outgoing Sendmail emails.">
+    <meta name="description" content="How to root or update a Nexus Android using only open source tools.">
     <meta name="author" content="Aaron Horler">
-    <meta name="url" content="https://aaronhorler.com/articles/sendmail.html">
+    <meta name="url" content="https://aaronhorler.com/articles/nexus-root-update.html">
 
     <!-- Privacy -->
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="x-dns-prefetch-control" content="off">
 
-    <title>Using Let's Encrypt to secure outgoing Sendmail emails. | Aaron Horler</title>
+    <title>How to root or update a Nexus Android using only open source tools. | Aaron Horler</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -94,53 +94,110 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <br><h3>Using Let's Encrypt to secure outgoing Sendmail emails.</h3>
+                    <br><h3>How to root or update a Nexus Android using only open source tools.</h3>
                     <hr class="star-primary">
                 </div>
             </div>
             <div class="row" id="article-pad">
-                <p>The mail-transfer program Sendmail can easily be configured for STARTTLS transport security using your Let's Encrypt credentials.</p><br>
+                <p>This is a simple guide to updating and rooting a Nexus device using Linux, and entirely open source tools.</p>
 
-                <h4>1. Locate your Let's Encrypt directory.</h4>
+                <p>This guide assumes you have unlocked your bootloader.</p><br>
 
-                <p><code>sudo ls /etc/letsencrypt/live/example.com/</code></p>
+                <hr>
 
-                <p>Replace example.com with your domain. The output should look like this:</p>
+                <h3>To update Android.</h3>
 
-                <p><code>cert.pem  chain.pem  fullchain.pem  privkey.pem</code></p>
+                <h4>1. Download the latest factory image from Google.</h4>
 
-                <p id="article-note">Note: you need to have run letsencrypt first.</p><br>
+                <p>Visit the <a class="visible-link" href="https://developers.google.com/android/images">Factory Images for Nexus and Pixel Devices</a> page, locate your device, and download the latest update.</p>
 
-                <h4>2. Modify sendmail.mc</h4>
+                <p>For this guide, I'm using a Nexus 6P.</p>
 
-                <p><code>sudo nano /etc/mail/sendmail.mc</code></p>
+                <p>As of writing this article, the latest version of Android for the Nexus 6P (angler) is 7.1.2 (N2G47W, Jun 2017).</p>
 
-                <pre><code class="code-scroll">dnl#
-define(`confCACERT_PATH', `/etc/letsencrypt/live/example.com')dnl
-define(`confCACERT', `/etc/letsencrypt/live/example.com/chain.pem')dnl
-define(`confSERVER_CERT', `/etc/letsencrypt/live/example.com/cert.pem')dnl
-define(`confCLIENT_CERT', `/etc/letsencrypt/live/example.com/cert.pem')dnl
-define(`confSERVER_KEY', `/etc/letsencrypt/live/example.com/privkey.pem')dnl
-define(`confCLIENT_KEY', `/etc/letsencrypt/live/example.com/privkey.pem')dnl
-dnl#</code></pre>
+                <p>The update will download as a ZIP file. Extract it.</p><br>
 
-                <p>Append the above to the end of the file, replacing example.com with your domain.</p>
+                <h4>2. Install ADB and Fastboot.</h4>
 
-                <p>This will also work with an ECDSA private key and Let's Encrypt.</p>
+                <p><code>sudo apt-get install adb fastboot</code></p><br>
 
-                <pre><code class="code-scroll">dnl#
-define(`confCACERT_PATH', `/etc/letsencrypt/ecdsa/example.com')dnl
-define(`confCACERT', `/etc/letsencrypt/live/example.com/0001_chain.pem')dnl
-define(`confSERVER_CERT', `/etc/letsencrypt/ecdsa/example.com/0000_cert.pem')dnl
-define(`confCLIENT_CERT', `/etc/letsencrypt/ecdsa/example.com/0000_cert.pem')dnl
-define(`confSERVER_KEY', `/etc/letsencrypt/ecdsa/example.com/privkey.pem')dnl
-define(`confCLIENT_KEY', `/etc/letsencrypt/ecdsa/example.com/privkey.pem')dnl
-dnl#
-</code></pre><br>
+                <h4>3. Update.</h4>
 
-                <h4>2. Restart Sendmail</h4>
+                <p>First, place your device into USB debugging mode via Settings > Developer options > Enable USB Debugging.</p>
 
-                <p><code>sudo /etc/init.d/sendmail restart</code></p>
+                <p>You may need to <a class="visible-link" href="https://developer.android.com/studio/debug/dev-options.html">enable Developer options</a>.</p>
+
+                <p>Move to your extracted ZIP archive.</p>
+
+                <p><code>cd ~/Downloads/angler-n2g47w</code></p>
+
+                <p>Start ADB and check for your device. A prompt will likely appear on your device seeking approval. Accept it.</p>
+
+                <p><code>sudo adb devices</code></p>
+
+                <p>Boot your device into fastboot mode.</p>
+
+                <p><code>sudo adb reboot-bootloader</code></p>
+
+                <p>Flash the updated bootloader.</p>
+
+                <p><code>sudo fastboot flash bootloader bootloader-angler-angler-03.68.img</code></p>
+
+                <p><code>sudo fastboot reboot-bootloader</code></p>
+
+                <p>Flash the updated radio.</p>
+
+                <p><code>sudo fastboot flash radio radio-angler-angler-03.81.img</code></p>
+
+                <p><code>sudo fastboot reboot-bootloader</code></p>
+
+                <p>Finally, update fully. This command will not wipe your device.</p>
+
+                <p><code>sudo fastboot update image-angler-n2g47w.zip</code></p>
+
+                <p>Congratulations. Your device will reboot normally, with an updated firmware.</p>
+
+                <hr>
+
+                <h3>To root Android.</h3>
+
+                <p>Traditionally, SuperSU by Chainfire has been used to root Android devices. SuperSU was recently sold to a Chinese company, and was never open source even under Chainfire.</p>
+
+                <p>In this guide, I'll be using <a class="visible-link" href="https://forum.xda-developers.com/apps/magisk">Magisk</a> - which is open source.</p><br>
+
+                <h4>1. Download Magisk, and other, dependancies.</h4>
+
+                <p>Download the Magisk flashable ZIP from <a class="visible-link" href="https://github.com/topjohnwu/Magisk/releases">here</a>.</p>
+
+                <p>Download the Magisk Manager APK from <a class="visible-link" href="https://github.com/topjohnwu/MagiskManager/releases">here</a>.</p>
+
+                <p>And, finally, download TWRP from <a class="visible-link" href="https://twrp.me/Devices/">here</a>. This will be an IMG file.</p>
+
+                <p>Move these dependancies to your device, excluding TWRP.</p><br>
+
+                <h4>2. Boot temporarily to TWRP.</h4>
+
+                <p><code>sudo adb reboot-bootloader</code></p>
+
+                <p><code>sudo fastbot boot ~/Downloads/twrp-3.1.1-0-angler.img</code></p>
+
+                <p>On your device, select not to alter the system partition, and enter your device password/PIN code.</p><br>
+
+                <h4>3. Flash Magisk.</h4>
+
+                <p>In TWRP, select to flash a ZIP. Find the Magisk ZIP on your internal storage, and flash it normally.</p>
+
+                <p>Finally, reboot your device. Do not opt to install any TWRP app.</p><br>
+
+                <h4>4. Install Magisk Manager.</h4>
+
+                <p>Using a file manager, install the Magisk Manager APK.</p>
+
+                <p><a class="visible-link" href="https://github.com/arpitkh96/AmazeFileManager">Amaze File Manager</a> is open source.</p>
+
+                <p>You should now have root access, managable via the Magisk Manager app.</p>
+
+                <p>Features like systemless hosts (for ad blocking) and BusyBox can be enabled via Magisk Manager settings.</p>
             </div>
         </div>
     </section>

@@ -1,4 +1,4 @@
-function encryptMessage(){  
+function encryptMessage(){
 	if(window.crypto.getRandomValues){
 		if(document.getElementById("message").value != ""){
 			var publicKeyString = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
@@ -64,6 +64,7 @@ function encryptMessage(){
 			});
 
 			$("#btnEncrypt").attr("disabled", true);
+			document.getElementById("message").disabled = true;
 			document.getElementById("btnEncrypt").title = "You may only encrypt once.";
 			document.getElementById("btnEncrypt").removeEventListener("click", encryptMessage);
 		}
@@ -74,4 +75,3 @@ function encryptMessage(){
 }
 
 document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);
-

@@ -585,3 +585,7 @@ code.code-scroll {
     overflow-x: scroll;
     word-wrap: normal
 }
+
+.visible-link {
+    color:#337ab7;
+}

@@ -6,15 +6,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="This is just a (very bland) placeholder.">
-    <meta name="author" content="Articles by Aaron Horler">
-    <meta name="url" content="https://aaronhorler.com/articles/">
+    <meta name="description" content="How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi.">
+    <meta name="author" content="Aaron Horler">
+    <meta name="url" content="https://aaronhorler.com/articles/dnscrypt.html">
 
     <!-- Privacy -->
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="x-dns-prefetch-control" content="off">
 
-    <title>Articles | Aaron Horler</title>
+    <title>How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi. | Aaron Horler</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -89,40 +89,137 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <section id="portfolio">
+    <!-- Portfolio Grid Section -->
+    <section>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <br><br><br><br><br><br><h2>Articles</h2>
+                    <br><h3>How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi.</h3>
                     <hr class="star-primary">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p><a href="/articles/apache.html">Apache and Let's Encrypt best practices.</a></p>
-                </div>
-                <div class="col-lg-4">
-                    <p><a href="/articles/sendmail.html">Using Let's Encrypt with Sendmail.</a></p>
-                </div>
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p><a href="/articles/php-reporturi.html">Accepting secuirty header reports using PHP.</a></p>
-                </div>
-                <div class="col-lg-4">
-                    <p><a href="/articles/openpgpjs.html">Creating a JavaScript PGP contact form.</a></p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p><a href="articles/nexus-root-update.html">Root or update a Nexus device using only open source tools.</a></p>
-                </div>
-                <div class="col-lg-4">
-                    <p><a href="/articles/dnscrypt.html">Create a local DNSCrypt forwarder using a Raspberry Pi and dnsmasq.</a></p>
-                </div>
+            <div class="row" id="article-pad">
+                <p>This is a guide to using a Raspberry Pi, or another Linux-based device, as a local dnsmasq-based DNSCrypt forwarder.</p>
+
+                <p>This will secure the DNS requests leaving your local network.</p><br>
+
+                <hr>
+
+                <h4>1. Download and install dnscrypt-autoinstall.</h4>
+
+                <p><a class="visible-link" href="https://github.com/simonclausen/dnscrypt-autoinstall">dnscrypt-autoinstall</a> is probably the easiest method of installing DNSCrypt as a service on Linux.</p>
+
+                <p>Download dnscrypt-auto.</p>
+
+                <p><code>wget https://raw.githubusercontent.com/simonclausen/dnscrypt-autoinstall/master/dnscrypt-autoinstall</code></p>
+
+                <p>Make it executable.</p>
+
+                <p><code>chmod 755 dnscrypt-autoinstall</code></p>
+
+                <p>And, run it.</p>
+
+                <p><code>sudo ./dnscrypt-autoinstall</code></p>
+
+                <p>dnscrypt-autoinstall will install DNSCrypt and all dependancies. It will also ask to select a resolver. For this guide, I'm using Cisco's OpenDNS - which is option 10.</p><br>
+
+                <h4>2. Change DNSCrypt's port.</h4>
+
+                <p>DNSCrypt (dnscrypt-proxy) runs on localhost port 53 (53 is the default port for DNS).</p>
+
+                <p>We intend to run our own dnsmasq server on port 53, so we must change this.</p>
+
+                <p>Edit dnscrypt-autoinstall.conf</p>
+
+                <p><code>sudo nano /etc/systemd/system/dnscrypt-autoinstall.conf</code></p>
+
+                <p>Change <code>DNSCRYPT_LOCALPORT</code> and <code>DNSCRYPT_LOCALPORT2</code> to something unused, like port 40.</p>
+
+                <p>A copy of my dnscrypt-autoinstall.conf is below.</p>
+
+                <pre><code class="code-scroll">DNSCRYPT_LOCALIP=127.0.0.1
+DNSCRYPT_LOCALIP2=127.0.0.2
+DNSCRYPT_LOCALPORT=40
+DNSCRYPT_LOCALPORT2=40
+DNSCRYPT_USER=dnscrypt
+DNSCRYPT_RESOLVER=cisco
+DNSCRYPT_RESOLVER2=cisco</code></pre>
+
+                <p>Restart dnscrypt-autoinstall.</p>
+
+                <p><code>sudo service dnscrypt-autoinstall restart</code></p><br> 
+
+                <h4>3. Install dnsmasq and configure.</h4>
+
+                <p>dnsmasq will function as a DNS server that will pass DNS queries onto DNSCrypt on localhost port 40.</p>
+
+                <p><code>sudo apt-get install dnsmasq</code></p>
+
+                <p>Edit /etc/dnsmasq.conf</p>
+
+                <p><code>sudo nano /etc/dnsmasq.conf</code></p>
+
+                <pre><code class="code-scroll"># Never forward plain names (without a dot or domain part).
+domain-needed
+
+# Never forward addresses in the non-routed address spaces.
+bogus-priv
+
+# Do not read /etc/resolv.conf or any other file.
+no-resolv
+
+#  Do not poll /etc/resolv.conf or other resolv files for changes and re-read.
+no-poll
+
+# You can block domains using this method.
+# I maintain a lightweight list at https://github.com/aghorler/lightweight-ddwrt-blocklist
+# address=/doubleclick.net/0.0.0.0
+
+# Listen on localhost, and on the local network address.
+listen-address=127.0.0.1,192.168.0.199
+
+# DNSCrypt is listening on localhost port 40. Pass everything else onto that.
+server=127.0.0.1#40
+server=127.0.0.2#40</code></pre>
+
+                <p>Replace <em>192.168.0.199</em> with the local IP address of the device.</p>
+
+                <p>Restart dnsmasq</p>
+
+                <p><code>sudo service dnsmasq restart</code></p><br>
+
+                <h4>4. Configure UFW as a firewall.</h4>
+
+                <p>This isn't strictly necessary, but it's of no harm.</p>
+
+                <p>Allow all outgoing traffic by default.</p>
+
+                <p><code>sudo ufw default allow outgoing</code></p>
+
+                <p>Deny all incoming traffic by default.</p>
+
+                <p><code>sudo ufw default deny incoming</code></p>
+
+                <p>Allow incoming SSH traffic (if you're using SSH for terminal access). Remember to change <em>ssh</em> to a custom port number if you're not using port 22.</p>
+
+                <p><code>sudo ufw allow ssh</code></p>
+
+                <p>Allow incoming DNS traffic.</p>
+
+                <p><code>sudo ufw allow dns</code></p>
+
+                <p>Enable UFW.</p>
+
+                <p><code>sudo ufw enable</code></p><br>
+
+                <h4>5. Configure local DHCP, and you're done.</h4>
+
+                <p>You now need to configure your router or stand-alone DHCP server to use your DNSCrypt device's local IP address for DNS. You can also statically do this per device.</p>
+
+                <p>You can verify your DNS requests are being handled correctly with a service like <a class="visible-link" href="https://dnsleaktest.com/">DNS leak test</a>.
             </div>
         </div>
     </section>
-
-    <br><br>
 
     <!-- Footer -->
     <footer class="text-center">

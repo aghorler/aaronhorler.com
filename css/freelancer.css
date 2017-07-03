@@ -589,3 +589,8 @@ code.code-scroll {
 .visible-link {
     color:#337ab7;
 }
+
+.spam-disclaimer {
+    font-size: 80%;
+    padding-left: 15px;
+}

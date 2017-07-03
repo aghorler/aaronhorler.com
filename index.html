@@ -97,7 +97,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
+                    <img id="profile" class="img-responsive" src="img/profile.png" alt="">
                     <div class="intro-text">
                         <span class="name">Aaron Horler</span>
                         <hr class="star-light">
@@ -136,6 +136,9 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
                 <div class="col-lg-4 col-lg-offset-2">
                     <p><a href="articles/nexus-root-update.html">Root or update a Nexus device using only open source tools.</a></p>
                 </div>
+                <div class="col-lg-4">
+                    <p><a href="/articles/dnscrypt.html">Create a local DNSCrypt forwarder using a Raspberry Pi and dnsmasq.</a></p>
+                </div>
             </div>
         </div>
     </section>
@@ -156,11 +159,16 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
                 </div>
                 <div class="col-lg-4">
                     <p>My primary interests are information security, GNU/Linux, and web development.</p>
-                    <p>Use the button below to test my web server implementation.</p>
+                    <p>Use the button below to test my web server implementation, or the other button to read my résumé.</p>
                 </div>
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <a href="https://observatory.mozilla.org/analyze.html?host=aaronhorler.com" class="btn btn-lg btn-outline">
                         <i class="fa fa-server"></i> Test this host
+                    </a>
+                </div>
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <a href="https://docs.google.com/document/d/1s6DyIuNm1FQ0zivzMG57uMAfX7Zck8c8PHJDFFcVwNk/edit?usp=sharing" class="btn btn-lg btn-outline">
+                        <i class="fa fa-file-text-o"></i> Read my résumé
                     </a>
                 </div>
             </div>
@@ -208,6 +216,8 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
                                 <a id="btnEncrypt" class="btn btn-success btn-lg" title="Optionally, you may encrypt your message using OpenPGP before you send it."><i class="fa fa-fw fa-lock"></i>Encrypt</a>
                                 <button id="btnSubmit" type="submit" class="btn btn-success btn-lg" title="Please don't spam me.">Send</button>
                             </div>
+                            <p class="spam-disclaimer">Please do not contact me with offers for software monetisation or advertising services.</p>
+                            <p class="spam-disclaimer text-danger">Предложения по монетизации и рекламе не принимаются.</p>
                         </div>
                     </form>
                 </div>
@@ -276,6 +286,8 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <script src="js/jqBootstrapValidation.js"></script>
     <script src="js/openpgp.min.js"></script>
     <script src="js/contact_me.min.js"></script>
+    
+    <script src="js/spin.js"></script>
 
     <!-- Theme JavaScript -->
     <script src="js/freelancer.min.js"></script>

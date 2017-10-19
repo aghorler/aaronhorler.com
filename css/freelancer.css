@@ -456,8 +456,11 @@ code.code-scroll {
   overflow-x: scroll;
   word-wrap: normal }
 
-.visible-link {
+.light-link {
   color: #777; }
+
+.visible-link {
+  color: #337ab7; }
 
 #btnEncrypt {
   color: white; }

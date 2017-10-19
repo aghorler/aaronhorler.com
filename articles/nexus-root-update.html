@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<!-- Living is easy with eyes closed, misunderstanding all you see.
+It's getting hard to be someone, but it all works out; it doesn't matter much to me. -->
+
+  <head>
 
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="How to root or update a Nexus Android using only open source tools.">
     <meta name="author" content="Aaron Horler">
     <meta name="url" content="https://aaronhorler.com/articles/nexus-root-update.html">
@@ -16,251 +18,230 @@
 
     <title>How to root or update a Nexus Android using only open source tools. | Aaron Horler</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Theme CSS -->
-    <link href="/css/freelancer.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
+    <!-- Custom styles for this template -->
+    <link href="../css/freelancer.css" rel="stylesheet">
+
     <!-- Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#102a45">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#102a45">
+  </head>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
-    <![endif]-->
-
-</head>
-
-<body id="page-top" class="index">
+  <body id="page-top">
 
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="/">Aaron Horler</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#portfolio">Articles</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#about">About</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#portfolio">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
         </div>
-        <!-- /.container-fluid -->
+      </div>
     </nav>
 
-    <!-- Portfolio Grid Section -->
+    <br>
+
     <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <br><h3>How to root or update a Nexus Android using only open source tools.</h3>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row" id="article-pad">
-                <p>This is a simple guide to updating and rooting a Nexus device using Linux, and entirely open source tools.</p>
-
-                <p>This guide assumes you have unlocked your bootloader.</p><br>
-
-                <hr>
-
-                <h3>To update Android.</h3>
-
-                <h4>1. Download the latest factory image from Google.</h4>
-
-                <p>Visit the <a class="visible-link" href="https://developers.google.com/android/images">Factory Images for Nexus and Pixel Devices</a> page, locate your device, and download the latest update.</p>
-
-                <p>For this guide, I'm using a Nexus 6P.</p>
-
-                <p>As of writing this article, the latest version of Android for the Nexus 6P (angler) is 7.1.2 (N2G47W, Jun 2017).</p>
-
-                <p>The update will download as a ZIP file. Extract it.</p><br>
-
-                <h4>2. Install ADB and Fastboot.</h4>
-
-                <p><code>sudo apt-get install adb fastboot</code></p><br>
-
-                <h4>3. Update.</h4>
-
-                <p>First, place your device into USB debugging mode via Settings > Developer options > Enable USB Debugging.</p>
-
-                <p>You may need to <a class="visible-link" href="https://developer.android.com/studio/debug/dev-options.html">enable Developer options</a>.</p>
-
-                <p>Move to your extracted ZIP archive.</p>
-
-                <p><code>cd ~/Downloads/angler-n2g47w</code></p>
-
-                <p>Start ADB and check for your device. A prompt will likely appear on your device seeking approval. Accept it.</p>
-
-                <p><code>sudo adb devices</code></p>
-
-                <p>Boot your device into fastboot mode.</p>
-
-                <p><code>sudo adb reboot-bootloader</code></p>
-
-                <p>Flash the updated bootloader.</p>
-
-                <p><code>sudo fastboot flash bootloader bootloader-angler-angler-03.68.img</code></p>
-
-                <p><code>sudo fastboot reboot-bootloader</code></p>
-
-                <p>Flash the updated radio.</p>
-
-                <p><code>sudo fastboot flash radio radio-angler-angler-03.81.img</code></p>
-
-                <p><code>sudo fastboot reboot-bootloader</code></p>
-
-                <p>Finally, update fully. This command will not wipe your device.</p>
-
-                <p><code>sudo fastboot update image-angler-n2g47w.zip</code></p>
-
-                <p>Congratulations. Your device will reboot normally, with an updated firmware.</p>
-
-                <hr>
-
-                <h3>To root Android.</h3>
-
-                <p>Traditionally, SuperSU by Chainfire has been used to root Android devices. SuperSU was recently sold to a Chinese company, and was never open source even under Chainfire.</p>
-
-                <p>In this guide, I'll be using <a class="visible-link" href="https://forum.xda-developers.com/apps/magisk">Magisk</a> - which is open source.</p><br>
-
-                <h4>1. Download Magisk, and other, dependancies.</h4>
-
-                <p>Download the Magisk flashable ZIP from <a class="visible-link" href="https://github.com/topjohnwu/Magisk/releases">here</a>.</p>
-
-                <p>Download the Magisk Manager APK from <a class="visible-link" href="https://github.com/topjohnwu/MagiskManager/releases">here</a>.</p>
-
-                <p>And, finally, download TWRP from <a class="visible-link" href="https://twrp.me/Devices/">here</a>. This will be an IMG file.</p>
-
-                <p>Move these dependancies to your device, excluding TWRP.</p><br>
-
-                <h4>2. Boot temporarily to TWRP.</h4>
-
-                <p><code>sudo adb reboot-bootloader</code></p>
-
-                <p><code>sudo fastbot boot ~/Downloads/twrp-3.1.1-0-angler.img</code></p>
-
-                <p>On your device, select not to alter the system partition, and enter your device password/PIN code.</p><br>
-
-                <h4>3. Flash Magisk.</h4>
-
-                <p>In TWRP, select to flash a ZIP. Find the Magisk ZIP on your internal storage, and flash it normally.</p>
-
-                <p>Finally, reboot your device. Do not opt to install any TWRP app.</p><br>
-
-                <h4>4. Install Magisk Manager.</h4>
-
-                <p>Using a file manager, install the Magisk Manager APK.</p>
-
-                <p><a class="visible-link" href="https://github.com/arpitkh96/AmazeFileManager">Amaze File Manager</a> is open source.</p>
-
-                <p>You should now have root access, managable via the Magisk Manager app.</p>
-
-                <p>Features like systemless hosts (for ad blocking) and BusyBox can be enabled via Magisk Manager settings.</p>
-            </div>
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <br><h3>How to root or update a Nexus Android using only open source tools.</h3>
+          <hr class="star-primary">
         </div>
+        <div id="article-pad">
+          <p>This is a simple guide to updating and rooting a Nexus device using Linux, and entirely open source tools.</p>
+
+          <p>This guide assumes you have unlocked your bootloader.</p><br>
+
+          <hr>
+
+          <h3>To update Android.</h3>
+
+          <h4>1. Download the latest factory image from Google.</h4>
+
+          <p>Visit the <a class="visible-link" href="https://developers.google.com/android/images">Factory Images for Nexus and Pixel Devices</a> page, locate your device, and download the latest update.</p>
+
+          <p>For this guide, I'm using a Nexus 6P.</p>
+
+          <p>As of writing this article, the latest version of Android for the Nexus 6P (angler) is 7.1.2 (N2G47W, Jun 2017).</p>
+
+          <p>The update will download as a ZIP file. Extract it.</p><br>
+
+          <h4>2. Install ADB and Fastboot.</h4>
+
+          <p><code>sudo apt update</code></p>
+
+          <p><code>sudo apt install adb fastboot</code></p><br>
+
+          <h4>3. Update.</h4>
+
+          <p>First, place your device into USB debugging mode via Settings > Developer options > Enable USB Debugging.</p>
+
+          <p>You may need to <a class="visible-link" href="https://developer.android.com/studio/debug/dev-options.html">enable Developer options</a>.</p>
+
+          <p>Move to your extracted ZIP archive.</p>
+
+          <p><code>cd ~/Downloads/angler-n2g47w</code></p>
+
+          <p>Start ADB and check for your device. A prompt will likely appear on your device seeking approval. Accept it.</p>
+
+          <p><code>sudo adb devices</code></p>
+
+          <p>Boot your device into fastboot mode.</p>
+
+          <p><code>sudo adb reboot-bootloader</code></p>
+
+          <p>Flash the updated bootloader.</p>
+
+          <p><code>sudo fastboot flash bootloader bootloader-angler-angler-03.68.img</code></p>
+
+          <p><code>sudo fastboot reboot-bootloader</code></p>
+
+          <p>Flash the updated radio.</p>
+
+          <p><code>sudo fastboot flash radio radio-angler-angler-03.81.img</code></p>
+
+          <p><code>sudo fastboot reboot-bootloader</code></p>
+
+          <p>Finally, update fully. This command will not wipe your device.</p>
+
+          <p><code>sudo fastboot update image-angler-n2g47w.zip</code></p>
+
+          <p>Congratulations. Your device will reboot normally, with an updated firmware.</p>
+
+          <hr>
+
+          <h3>To root Android.</h3>
+
+          <p>Traditionally, SuperSU by Chainfire has been used to root Android devices. SuperSU was recently sold to a Chinese company, and was never open source even under Chainfire.</p>
+
+          <p>In this guide, I'll be using <a class="visible-link" href="https://forum.xda-developers.com/apps/magisk">Magisk</a> - which is open source.</p><br>
+
+          <h4>1. Download Magisk, and other, dependancies.</h4>
+
+          <p>Download the Magisk flashable ZIP from <a class="visible-link" href="https://tiny.cc/latestmagisk">here</a>.</p>
+
+          <p>Download the Magisk Manager APK from <a class="visible-link" href="https://github.com/topjohnwu/MagiskManager/releases">here</a>.</p>
+
+          <p>And, finally, download TWRP from <a class="visible-link" href="https://twrp.me/Devices/">here</a>. This will be an IMG file.</p>
+
+          <p>Move these dependancies to your device, excluding TWRP.</p><br>
+
+          <h4>2. Boot temporarily to TWRP.</h4>
+
+          <p><code>sudo adb reboot-bootloader</code></p>
+
+          <p><code>sudo fastboot boot ~/Downloads/twrp-3.1.1-0-angler.img</code></p>
+
+          <p>On your device, select not to alter the system partition, and enter your device password/PIN code.</p><br>
+
+          <h4>3. Flash Magisk.</h4>
+
+          <p>In TWRP, select to flash a ZIP. Find the Magisk ZIP on your internal storage, and flash it normally.</p>
+
+          <p>Finally, reboot your device. Do not opt to install any TWRP app.</p><br>
+
+          <h4>4. Install Magisk Manager.</h4>
+
+          <p>Using a file manager, install the Magisk Manager APK.</p>
+
+          <p><a class="visible-link" href="https://github.com/arpitkh96/AmazeFileManager">Amaze File Manager</a> is open source.</p>
+
+          <p>You should now have root access, managable via the Magisk Manager app.</p>
+
+          <p>Features like systemless hosts (for ad blocking) and BusyBox can be enabled via Magisk Manager settings.</p>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h3>Location</h3>
-                        <p><a class="light-link" href="https://www.youtube.com/watch?v=QoHSPRslJXs">Melbourne</a>.</p>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Around the Web</h3>
-                        <ul class="list-inline">
-                            <li>
-                                <a href="https://github.com/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://linkedin.com/in/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://www.facebook.com/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>About Me</h3>
-                        <p>I am an Information Technology student.</p>
-                    </div>
-                </div>
+      <div class="footer-above">
+        <div class="container">
+          <div class="row">
+            <div class="footer-col col-md-4">
+              <h3>Location</h3>
+              <p><a class="light-link" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
             </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
-                    </div>
-                </div>
+            <div class="footer-col col-md-4">
+              <h3>Around the Web</h3>
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
+                    <i class="fa fa-fw fa-github"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
+                    <i class="fa fa-fw fa-facebook"></i>
+                  </a>
+                </li>
+              </ul>
             </div>
+            <div class="footer-col col-md-4">
+              <h3>About Me</h3>
+              <p>I am an Information Technology student.</p>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="footer-below">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
-        <a class="btn btn-primary" href="#page-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
     </div>
 
-    <!-- jQuery -->
-    <script src="/vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/popper/popper.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/openpgpjs/openpgp.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="/js/freelancer.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../js/freelancer.min.js"></script>
 
 </body>
 

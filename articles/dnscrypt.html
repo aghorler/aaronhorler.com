@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<!-- Living is easy with eyes closed, misunderstanding all you see.
+It's getting hard to be someone, but it all works out; it doesn't matter much to me. -->
+
+  <head>
 
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi.">
     <meta name="author" content="Aaron Horler">
     <meta name="url" content="https://aaronhorler.com/articles/dnscrypt.html">
@@ -16,128 +18,99 @@
 
     <title>How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi. | Aaron Horler</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Theme CSS -->
-    <link href="/css/freelancer.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
+    <!-- Custom styles for this template -->
+    <link href="../css/freelancer.css" rel="stylesheet">
+
     <!-- Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#102a45">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#102a45">
+  </head>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
-    <![endif]-->
-
-</head>
-
-<body id="page-top" class="index">
+  <body id="page-top">
 
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="/">Aaron Horler</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#portfolio">Articles</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#about">About</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#portfolio">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
         </div>
-        <!-- /.container-fluid -->
+      </div>
     </nav>
 
-    <!-- Portfolio Grid Section -->
+    <br>
+
     <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <br><h3>How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi.</h3>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row" id="article-pad">
-                <p>This is a guide to using a Raspberry Pi, or another Linux-based device, as a local dnsmasq-based DNSCrypt forwarder.</p>
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <br><h3>How to create a local DNSCrypt forwarder using dnsmasq and a Raspberry Pi.</h3>
+          <hr class="star-primary">
+        </div>
+        <div id="article-pad">
+          <p>This is a guide to using a Raspberry Pi, or another Linux-based device, as a local dnsmasq-based DNSCrypt forwarder.</p>
 
-                <p>This will secure the DNS requests leaving your local network.</p><br>
+          <p>This will secure the DNS requests leaving your local network.</p><br>
 
-                <hr>
+          <hr>
 
-                <h4>1. Download and install dnscrypt-autoinstall.</h4>
+          <h4>1. Download and install dnscrypt-autoinstall.</h4>
 
-                <p><a class="visible-link" href="https://github.com/simonclausen/dnscrypt-autoinstall">dnscrypt-autoinstall</a> is probably the easiest method of installing DNSCrypt as a service on Linux.</p>
+          <p><a class="visible-link" href="https://github.com/simonclausen/dnscrypt-autoinstall">dnscrypt-autoinstall</a> is probably the easiest method of installing DNSCrypt as a service on Linux.</p>
 
-                <p>Download dnscrypt-auto.</p>
+          <p>Download dnscrypt-auto.</p>
 
-                <p><code>wget https://raw.githubusercontent.com/simonclausen/dnscrypt-autoinstall/master/dnscrypt-autoinstall</code></p>
+          <p><code>wget https://raw.githubusercontent.com/simonclausen/dnscrypt-autoinstall/master/dnscrypt-autoinstall</code></p>
 
-                <p>Make it executable.</p>
+          <p>Make it executable.</p>
 
-                <p><code>chmod 755 dnscrypt-autoinstall</code></p>
+          <p><code>chmod 755 dnscrypt-autoinstall</code></p>
 
-                <p>And, run it.</p>
+          <p>And, run it.</p>
 
-                <p><code>sudo ./dnscrypt-autoinstall</code></p>
+          <p><code>sudo ./dnscrypt-autoinstall</code></p>
 
-                <p>dnscrypt-autoinstall will install DNSCrypt and all dependancies. It will also ask to select a resolver. For this guide, I'm using Cisco's OpenDNS - which is option 10.</p><br>
+          <p>dnscrypt-autoinstall will install DNSCrypt and all dependancies. It will also ask to select a resolver. For this guide, I'm using Cisco's OpenDNS - which is option 10.</p><br>
 
-                <h4>2. Change DNSCrypt's port.</h4>
+          <h4>2. Change DNSCrypt's port.</h4>
 
-                <p>DNSCrypt (dnscrypt-proxy) runs on localhost port 53 (53 is the default port for DNS).</p>
+          <p>DNSCrypt (dnscrypt-proxy) runs on localhost port 53 (53 is the default port for DNS).</p>
 
-                <p>We intend to run our own dnsmasq server on port 53, so we must change this.</p>
+          <p>We intend to run our own dnsmasq server on port 53, so we must change this.</p>
 
-                <p>Edit dnscrypt-autoinstall.conf</p>
+          <p>Edit dnscrypt-autoinstall.conf</p>
 
-                <p><code>sudo nano /etc/systemd/system/dnscrypt-autoinstall.conf</code></p>
+          <p><code>sudo nano /etc/systemd/system/dnscrypt-autoinstall.conf</code></p>
 
-                <p>Change <code>DNSCRYPT_LOCALPORT</code> and <code>DNSCRYPT_LOCALPORT2</code> to something unused, like port 40.</p>
+          <p>Change <code>DNSCRYPT_LOCALPORT</code> and <code>DNSCRYPT_LOCALPORT2</code> to something unused, like port 40.</p>
 
-                <p>A copy of my dnscrypt-autoinstall.conf is below.</p>
+          <p>A copy of my dnscrypt-autoinstall.conf is below.</p>
 
-                <pre><code class="code-scroll">DNSCRYPT_LOCALIP=127.0.0.1
+          <pre><code class="code-scroll">DNSCRYPT_LOCALIP=127.0.0.1
 DNSCRYPT_LOCALIP2=127.0.0.2
 DNSCRYPT_LOCALPORT=40
 DNSCRYPT_LOCALPORT2=40
@@ -145,21 +118,21 @@ DNSCRYPT_USER=dnscrypt
 DNSCRYPT_RESOLVER=cisco
 DNSCRYPT_RESOLVER2=cisco</code></pre>
 
-                <p>Restart dnscrypt-autoinstall.</p>
+          <p>Restart dnscrypt-autoinstall.</p>
 
-                <p><code>sudo service dnscrypt-autoinstall restart</code></p><br> 
+          <p><code>sudo service dnscrypt-autoinstall restart</code></p><br> 
 
-                <h4>3. Install dnsmasq and configure.</h4>
+          <h4>3. Install dnsmasq and configure.</h4>
 
-                <p>dnsmasq will function as a DNS server that will pass DNS queries onto DNSCrypt on localhost port 40.</p>
+          <p>dnsmasq will function as a DNS server that will pass DNS queries onto DNSCrypt on localhost port 40.</p>
 
-                <p><code>sudo apt-get install dnsmasq</code></p>
+          <p><code>sudo apt install dnsmasq</code></p>
 
-                <p>Edit /etc/dnsmasq.conf</p>
+          <p>Edit /etc/dnsmasq.conf</p>
 
-                <p><code>sudo nano /etc/dnsmasq.conf</code></p>
+          <p><code>sudo nano /etc/dnsmasq.conf</code></p>
 
-                <pre><code class="code-scroll"># Never forward plain names (without a dot or domain part).
+          <pre><code class="code-scroll"># Never forward plain names (without a dot or domain part).
 domain-needed
 
 # Never forward addresses in the non-routed address spaces.
@@ -170,6 +143,10 @@ no-resolv
 
 #  Do not poll /etc/resolv.conf or other resolv files for changes and re-read.
 no-poll
+
+# Enable DNSSEC.
+conf-file=/usr/share/dnsmasq-base/trust-anchors.conf
+dnssec
 
 # You can block domains using this method.
 # I maintain a lightweight list at https://github.com/aghorler/lightweight-ddwrt-blocklist
@@ -182,104 +159,110 @@ listen-address=127.0.0.1,192.168.0.199
 server=127.0.0.1#40
 server=127.0.0.2#40</code></pre>
 
-                <p>Replace <em>192.168.0.199</em> with the local IP address of the device.</p>
+          <p>Replace <em>192.168.0.199</em> with the local IP address of the device.</p>
 
-                <p>Restart dnsmasq</p>
+          <p>Restart dnsmasq</p>
 
-                <p><code>sudo service dnsmasq restart</code></p><br>
+          <p><code>sudo service dnsmasq restart</code></p><br>
 
-                <h4>4. Configure UFW as a firewall.</h4>
+          <h4>4. Configure UFW as a firewall.</h4>
 
-                <p>This isn't strictly necessary, but it's of no harm.</p>
+          <p>This isn't strictly necessary, but it's of no harm.</p>
 
-                <p>Allow all outgoing traffic by default.</p>
+          <p>Allow all outgoing traffic by default.</p>
 
-                <p><code>sudo ufw default allow outgoing</code></p>
+          <p><code>sudo ufw default allow outgoing</code></p>
 
-                <p>Deny all incoming traffic by default.</p>
+          <p>Deny all incoming traffic by default.</p>
 
-                <p><code>sudo ufw default deny incoming</code></p>
+          <p><code>sudo ufw default deny incoming</code></p>
 
-                <p>Allow incoming SSH traffic (if you're using SSH for terminal access). Remember to change <em>ssh</em> to a custom port number if you're not using port 22.</p>
+          <p>Allow incoming SSH traffic (if you're using SSH for terminal access). Remember to change <em>ssh</em> to a custom port number if you're not using port 22.</p>
 
-                <p><code>sudo ufw allow ssh</code></p>
+          <p><code>sudo ufw allow ssh</code></p>
 
-                <p>Allow incoming DNS traffic.</p>
+          <p>Allow incoming DNS traffic.</p>
 
-                <p><code>sudo ufw allow dns</code></p>
+          <p><code>sudo ufw allow dns</code></p>
 
-                <p>Enable UFW.</p>
+          <p>Enable UFW.</p>
 
-                <p><code>sudo ufw enable</code></p><br>
+          <p><code>sudo ufw enable</code></p><br>
 
-                <h4>5. Configure local DHCP, and you're done.</h4>
+          <h4>5. Configure local DHCP, and you're done.</h4>
 
-                <p>You now need to configure your router or stand-alone DHCP server to use your DNSCrypt device's local IP address for DNS. You can also statically do this per device.</p>
+          <p>You now need to configure your router or stand-alone DHCP server to use your DNSCrypt device's local IP address for DNS. You can also statically do this per device.</p>
 
-                <p>You can verify your DNS requests are being handled correctly with a service like <a class="visible-link" href="https://dnsleaktest.com/">DNS leak test</a>.
-            </div>
+          <p>You can verify your DNS requests are being handled correctly with a service like <a class="visible-link" href="https://dnsleaktest.com/">DNS leak test</a>.
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h3>Location</h3>
-                        <p><a class="light-link" href="https://www.youtube.com/watch?v=QoHSPRslJXs">Melbourne</a>.</p>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Around the Web</h3>
-                        <ul class="list-inline">
-                            <li>
-                                <a href="https://github.com/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://linkedin.com/in/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://www.facebook.com/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>About Me</h3>
-                        <p>I am an Information Technology student.</p>
-                    </div>
-                </div>
+      <div class="footer-above">
+        <div class="container">
+          <div class="row">
+            <div class="footer-col col-md-4">
+              <h3>Location</h3>
+              <p><a class="visible-link" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
             </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
-                    </div>
-                </div>
+            <div class="footer-col col-md-4">
+              <h3>Around the Web</h3>
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
+                    <i class="fa fa-fw fa-github"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
+                    <i class="fa fa-fw fa-facebook"></i>
+                  </a>
+                </li>
+              </ul>
             </div>
+            <div class="footer-col col-md-4">
+              <h3>About Me</h3>
+              <p>I am an Information Technology student.</p>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="footer-below">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              Copyright &copy; Aaron Horler 2017, using <a class="visible-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
-        <a class="btn btn-primary" href="#page-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
     </div>
 
-    <!-- jQuery -->
-    <script src="/vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/popper/popper.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/openpgpjs/openpgp.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="/js/freelancer.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../js/freelancer.min.js"></script>
 
 </body>
 

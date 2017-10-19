@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<!-- Living is easy with eyes closed, misunderstanding all you see.
+It's getting hard to be someone, but it all works out; it doesn't matter much to me. -->
+
+  <head>
 
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Apache and Let's Encrypt best practices for security.">
     <meta name="author" content="Aaron Horler">
     <meta name="url" content="https://aaronhorler.com/articles/apache.html">
@@ -16,222 +18,193 @@
 
     <title>Apache and Let's Encrypt best practices for security. | Aaron Horler</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Theme CSS -->
-    <link href="/css/freelancer.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
+    <!-- Custom styles for this template -->
+    <link href="../css/freelancer.css" rel="stylesheet">
+
     <!-- Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#102a45">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#102a45s">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#102a45">
+  </head>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
-    <![endif]-->
-
-</head>
-
-<body id="page-top" class="index">
+  <body id="page-top">
 
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="/">Aaron Horler</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#portfolio">Articles</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#about">About</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#portfolio">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
         </div>
-        <!-- /.container-fluid -->
+      </div>
     </nav>
 
-    <!-- Portfolio Grid Section -->
+    <br>
+
     <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <br><h3>Apache and Let's Encrypt best practices for security.</h3>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row" id="article-pad">
-                <p>This is a simple multi-part guide for configuring Apache and Let's Encrypt with optimal security settings under Ubuntu 16.04+.</p><br>
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <br><h3>Apache and Let's Encrypt best practices for security.</h3>
+          <hr class="star-primary">
+        </div>
+        <div id="article-pad">
+          <p>This is a simple multi-part guide for configuring Apache and Let's Encrypt with optimal security settings under Ubuntu 16.04+.</p><br>
 
-                <hr>
+          <hr>
 
-                <h3>Configuring Apache</h3>
+          <h3>Configuring Apache</h3>
 
-                <p>This assumes you have installed Apache via apt.</p>
+          <p>This assumes you have installed Apache via apt.</p>
 
-                <h4>1. Disable broadcasting of the Apache version</h4>
+          <h4>1. Disable broadcasting of the Apache version</h4>
 
-                <p><code>sudo nano /etc/apache2/apache2.conf</code></p>
+          <p><code>sudo nano /etc/apache2/apache2.conf</code></p>
 
-                <p>Append the following options to the end of the configuration file.</p>
+          <p>Append the following options to the end of the configuration file.</p>
 
-                <p><code>ServerTokens Prod</code></p>
+          <p><code>ServerTokens Prod</code></p>
 
-                <p><code>ServerSignature Off</code></p>
+          <p><code>ServerSignature Off</code></p>
 
-                <p>This will prevent Apache from sending its version in the response header and on error pages.</p><br>
+          <p>This will prevent Apache from sending its version in the response header and on error pages.</p><br>
 
-                <h4>2. Disable the ETag response header</h4>
+          <h4>2. Disable the ETag response header</h4>
 
-                <p>Append the option below to the same configuration file as in point 1.</p>
+          <p>Append the option below to the same configuration file as in point 1.</p>
 
-                <p><code>FileETag None</code></p><br>
+          <p><code>FileETag None</code></p><br>
 
-                <h4>4. Set the OCSP stapling cache</h4>
+          <h4>4. Set the OCSP stapling cache</h4>
 
-                <p>You will configure OCSP stapling later.</p>
+          <p>You will configure OCSP stapling later.</p>
 
-                <p>Append the option below to the same configuration file as in point 1.</p>
+          <p>Append the option below to the same configuration file as in point 1.</p>
 
-                <p><code>SSLStaplingCache shmcb:/var/run/apache2/stapling_cache(128000)</code></p><br>
+          <p><code>SSLStaplingCache shmcb:/var/run/apache2/stapling_cache(128000)</code></p><br>
 
-                <h4>3. Enable the HTTP/2 module (optional)</h4>
+          <h4>3. Enable the HTTP/2 module (optional)</h4>
 
-                <p><code>sudo a2enmod http2</code></p>
+          <p><code>sudo a2enmod http2</code></p>
 
-                <p>If the above command produces an error, you need to upgrade to a newer version of Apache.</p>
+          <p>If the above command produces an error, you need to upgrade to a newer version of Apache.</p>
 
-                <p>Using apt, add <a class="visible-link" href="https://launchpad.net/~ondrej/+archive/ubuntu/apache2">Ondřej Surý's Apache2 PPA</a> and upgrade.</p>
+          <p>Using apt, add <a class="visible-link" href="https://launchpad.net/~ondrej/+archive/ubuntu/apache2">Ondřej Surý's Apache2 PPA</a> and upgrade.</p>
 
-                <p><code>sudo add-apt-repository ppa:ondrej/apache2</code></p>
+          <p><code>sudo add-apt-repository ppa:ondrej/apache2</code></p>
 
-                <p><code>sudo apt-get update</code></p>
+          <p><code>sudo apt update</code></p>
 
-                <p>Upgrading using this method should not affect your existing configurations, but you should backup as a precaution.</p>
+          <p>Upgrading using this method should not affect your existing configurations, but you should backup as a precaution.</p>
 
-                <p><code>sudo apt-get --only-upgrade install apache2</code></p>
+          <p><code>sudo apt --only-upgrade install apache2</code></p>
 
-                <p>This should now work.</p>
+          <p>This should now work.</p>
 
-                <p><code>sudo a2enmod http2</code></p><br>
+          <p><code>sudo a2enmod http2</code></p><br>
 
-                <hr>
+          <hr>
 
-                <h3>Running Let's Encrypt</h3>
+          <h3>Running Let's Encrypt</h3>
 
-                <p>This requires you've setup at least one Apache VirtualHost. See <a class="visible-link" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04" title="I'm not affiliated with Digital Ocean."> this</a> guide.</p>
+          <p>This requires you've setup at least one Apache VirtualHost. See <a class="visible-link" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04" title="I'm not affiliated with Digital Ocean."> this</a> guide.</p>
 
-                <h4>1. Install Let's Encrypt</h4>
+          <h4>1. Install Let's Encrypt</h4>
 
-                <p><code>sudo apt-get install letsencrypt</code></p><br>
+          <p><code>sudo apt install letsencrypt</code></p><br>
 
-                <h4>2. Run Let's Encrypt</h4>
+          <h4>2. Run Let's Encrypt</h4>
 
-                <p><code>sudo letsencrypt --redirect --must-staple --rsa-key-size 4096 -d example.com -d www.example.com</code></p>
+          <p><code>sudo letsencrypt --redirect --must-staple --rsa-key-size 4096 -d example.com -d www.example.com</code></p>
 
-                <p>This command will request a certificate with the OCSP Must-Staple flag set, and produce an RSA key with a large keysize of 4096 bits.</p><br>
+          <p>This command will request a certificate with the OCSP Must-Staple flag set, and produce an RSA key with a large keysize of 4096 bits.</p><br>
 
-                <h4>3. Use an ECDSA private key instead (very optional)</h4>
+          <h4>3. Use an ECDSA private key instead (very optional)</h4>
 
-                <p>ECDSA is a faster and more secure alternative to RSA.</p>
+          <p>ECDSA is a faster and more secure alternative to RSA.</p>
 
-                <p>I recommend you test Let's Encrypt normally first.</p>
+          <p>I recommend you test Let's Encrypt normally first.</p>
 
-                <p>First, create a new directory and move to it.</p>
+          <p>First, create a new directory and move to it.</p>
 
-                <p><code>sudo mkdir -p /etc/letsencrypt/ecdsa/example.com</code></p>
+          <p><code>sudo mkdir -p /etc/letsencrypt/ecdsa/example.com</code></p>
 
-                <p><code>cd /etc/letsencrypt/ecdsa/example.com</code></p>
+          <p><code>cd /etc/letsencrypt/ecdsa/example.com</code></p>
 
-                <p>Now, generate an ECDSA private key.</p>
+          <p>Now, generate an ECDSA private key.</p>
 
-                <p><code>openssl ecparam -genkey -name secp384r1 > ./privkey.pem</code></p>
+          <p><code>openssl ecparam -genkey -name secp384r1 > ./privkey.pem</code></p>
 
-                <p>And a Certificate Signing Request (CSR).</p>
+          <p>And a Certificate Signing Request (CSR).</p>
 
-                <pre><code class="code-scroll">openssl req -new -sha256 -key privkey.pem -subj "/C=AU/ST=VIC/O=RMIT/CN=example.com" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:example.com,DNS:www.example.com\n1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05")) -out example.com.csr</code></pre>
+          <pre><code class="code-scroll">openssl req -new -sha256 -key privkey.pem -subj "/C=AU/ST=VIC/O=RMIT/CN=example.com" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:example.com,DNS:www.example.com\n1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05")) -out example.com.csr</code></pre>
 
-                <p>Replace every instance of <em>example.com</em> with your domain.</p>
+          <p>Replace every instance of <em>example.com</em> with your domain.</p>
 
-                <p>Replace <em>AU</em> with an acronym for your country of residence, or server location.</p>
+          <p>Replace <em>AU</em> with an acronym for your country of residence, or server location.</p>
 
-                <p>Replace <em>VIC</em> with an acronym for your state or other locality of residence, or server location.</p>
+          <p>Replace <em>VIC</em> with an acronym for your state or other locality of residence, or server location.</p>
 
-                <p>Replace <em>RMIT</em> with your organisation, or simply your name.</p>
+          <p>Replace <em>RMIT</em> with your organisation, or simply your name.</p>
 
-                <p>In case you were wondering, <code>1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05</code> will be used to request the certificate have the Must-Staple flag set. Do not alter this.</p>
+          <p>In case you were wondering, <code>1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05</code> will be used to request the certificate have the Must-Staple flag set. Do not alter this.</p>
 
-                <p>Request a certificate from Let's Encrypt.</p>
+          <p>Request a certificate from Let's Encrypt.</p>
 
-                <p>You may need to temporarily stop Apache so that letsencrypt can bind to port 443.</p>
+          <p>You may need to temporarily stop Apache so that letsencrypt can bind to port 443.</p>
 
-                <p><code>sudo service apache2 stop</code></p>
+          <p><code>sudo service apache2 stop</code></p>
 
-                <p><code>letsencrypt certonly --standalone --csr example.com.csr</code></p>
+          <p><code>letsencrypt certonly --standalone --csr example.com.csr</code></p>
 
-                <p>Finally, set correct permissions on this directory and its contents.</p>
+          <p>Finally, set correct permissions on this directory and its contents.</p>
 
-                <p><code>sudo chown -R root: /etc/letsencrypt/ecdsa/</code></p>
+          <p><code>sudo chown -R root: /etc/letsencrypt/ecdsa/</code></p>
 
-                <p><code>sudo chmod -R 700 /etc/letsencrypt/ecdsa/</code></p>
+          <p><code>sudo chmod -R 700 /etc/letsencrypt/ecdsa/</code></p>
 
-                <p><code>sudo chmod 600 /etc/letsencrypt/ecdsa/*/*</code></p><br>
+          <p><code>sudo chmod 600 /etc/letsencrypt/ecdsa/*/*</code></p><br>
 
-                <hr>
+          <hr>
 
-                <h3>Configuring Apache VirtualHosts</h3>
+          <h3>Configuring Apache VirtualHosts</h3>
 
-                <p>This requires you've run Let's Encrypt.</p>
+          <p>This requires you've run Let's Encrypt.</p>
 
-                <h4>1. Replace the Let's Encrypt-generated configuration file.</h4>
+          <h4>1. Replace the Let's Encrypt-generated configuration file.</h4>
 
-                <p>Let's Encrypt generates a configuration file for your VirtualHost. We're going to heavily change it.</p>
+          <p>Let's Encrypt generates a configuration file for your VirtualHost. We're going to heavily change it.</p>
 
-                <p>First, remove the current file.</p>
+          <p>First, remove the current file.</p>
 
-                <p><code>sudo rm -f /etc/sites-available/example.com-le-ssl.conf</code></p>
+          <p><code>sudo rm -f /etc/sites-available/example.com-le-ssl.conf</code></p>
 
-                <p>Now you can manipulate my template VirtualHost configuration to your liking.</p>
+          <p>Now you can manipulate my template VirtualHost configuration to your liking.</p>
 
-                <pre><code class="code-scroll">&lt;IfModule mod_ssl.c&gt;
+          <pre><code class="code-scroll">&lt;IfModule mod_ssl.c&gt;
 &lt;VirtualHost *:443&gt;
     # Uncomment this to enable HTTP/2. You must have enabled the module.
     # Protocols h2 http/1.1
@@ -255,7 +228,7 @@
     # Write your CSP. 
     # This will break your site. You'll need to use trial and error. 
     # Do not use 'unsafe-inline' or 'unsafe-eval', and no not change default-src to anything but 'none'.
-    Header always set Content-Security-Policy "default-src 'none'; child-src 'none'; connect-src 'none'; font-src 'none'; frame-ancestors 'none'; img-src 'none'; media-src 'none'; object-src 'none'; sandbox; script-src 'none'; style-src 'none';"
+    Header always set Content-Security-Policy "default-src 'none'; child-src 'none'; connect-src 'none'; font-src 'none'; frame-ancestors 'none'; img-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; sandbox; script-src 'none'; style-src 'none';"
 
     # Enable HSTS
     Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
@@ -303,139 +276,157 @@
 &lt;/VirtualHost&gt;
 &lt;/IfModule&gt;</code></pre>
 
-                <p>This configuration complies with Mozilla's <em>modern</em> SSL/TLS recommendations. You can find the <em>intermediate</em> recommendations for <em>SSLProtocol</em> and <em>SSLCipherSuite</em> <a class="visible-link" href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">here</a>.</p>
+          <p>This configuration complies with Mozilla's <em>modern</em> SSL/TLS recommendations. You can find the <em>intermediate</em> recommendations for <em>SSLProtocol</em> and <em>SSLCipherSuite</em> <a class="visible-link" href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">here</a>.</p>
 
-                <p>The <em>modern</em> recommendations will prevent access from certain older clients by, for example, disabling every SSL/TLS protocol except TLS 1.2.</p><br>
+          <p>The <em>modern</em> recommendations will prevent access from certain older clients by, for example, disabling every SSL/TLS protocol except TLS 1.2.</p><br>
 
-                <h4>3. Configure and set security headers in my template.</h4>
-                
-                <h5>HTTP Strict Transport Security (HSTS)</h5>
+          <h4>3. Configure and set security headers in my template.</h4>
+          
+          <h5>HTTP Strict Transport Security (HSTS)</h5>
 
-                <p><code>Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"</code></p>
+          <p><code>Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"</code></p>
 
-                <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a class="visible-link" href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy as part of future browser releases.</p>
+          <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a class="visible-link" href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy as part of future browser releases.</p>
 
-                <h5>Content Security Policy (CSP)</h5>
+          <h5>Content Security Policy (CSP)</h5>
 
-                <p><code>Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';</code></p>
+          <p><code>Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';</code></p>
 
-                <p>Instruct browsers what resources are allowed. Refer to <a class="visible-link" href="https://content-security-policy.com/">this</a> for all options.</p>
+          <p>Instruct browsers what resources are allowed. Refer to <a class="visible-link" href="https://content-security-policy.com/">this</a> for all options.</p>
 
-                <h5>Referrer-Policy</h5>
+          <h5>Referrer-Policy</h5>
 
-                <p><code>Header always set Referrer-Policy "no-referrer"</code></p>
+          <p><code>Header always set Referrer-Policy "no-referrer"</code></p>
 
-                <p>Instruct browsers not to send the Referer header.</p>
+          <p>Instruct browsers not to send the Referer header.</p>
 
-                <h5>X-Frame-Options</h5>
+          <h5>X-Frame-Options</h5>
 
-                <p><code>Header always set X-Frame-Options "DENY"</code></p>
+          <p><code>Header always set X-Frame-Options "DENY"</code></p>
 
-                <p>Instruct browsers not to render your domain in frames, iframes, or objects.</p>
+          <p>Instruct browsers not to render your domain in frames, iframes, or objects.</p>
 
-                <h5>X-XSS-Protection</h5>
+          <h5>X-XSS-Protection</h5>
 
-                <p><code>Header always set X-XSS-Protection "1; mode=block"</code></p>
+          <p><code>Header always set X-XSS-Protection "1; mode=block"</code></p>
 
-                <p>Enable XSS filtering, and block rendering of the page if an attack is detected.</p>
+          <p>Enable XSS filtering, and block rendering of the page if an attack is detected.</p>
 
-                <h5>X-Content-Type-Options</h5>
+          <h5>X-Content-Type-Options</h5>
 
-                <p><code>Header always set X-Content-Type-Options "nosniff"</code></p>
+          <p><code>Header always set X-Content-Type-Options "nosniff"</code></p>
 
-                <p>Instruct browsers not to MIME sniff.</p>
+          <p>Instruct browsers not to MIME sniff.</p>
 
-                <h4>4. Create your new VirtualHost file, and reboot Apache.</h4>
+          <h4>4. Create your new VirtualHost file, and reboot Apache.</h4>
 
-                <p>Once you've modified my template, create a new file with the same name and paste your configuration.</p>
+          <p>Once you've modified my template, create a new file with the same name and paste your configuration.</p>
 
-                <p><code>sudo nano /etc/sites-available/example.com-le-ssl.conf</code></p>
+          <p><code>sudo nano /etc/sites-available/example.com-le-ssl.conf</code></p>
 
-                <p><code>sudo service apache2 restart</code></p><br>
+          <p><code>sudo service apache2 restart</code></p><br>
 
-                <hr>
+          <hr>
 
-                <h3>Securing PHP slightly (optional)</h3>
+          <h3>Securing PHP slightly (optional)</h3>
 
-                <p>This is only required if you have PHP installed, and assumes PHP 7.</p>
+          <p>This is only required if you have PHP installed, and assumes PHP 7.</p>
 
-                <h4>1. Create a user.ini configuration file.</h4>
+          <h4>1. Create a user.ini configuration file.</h4>
 
-                <p><code>sudo nano /etc/php/7.0/apache2/conf.d/user.ini</code></p>
+          <p><code>sudo nano /etc/php/7.0/apache2/conf.d/user.ini</code></p>
 
-                <pre><code class="code-scroll">session.cookie_httponly = 1
+          <pre><code class="code-scroll"># Cookie security.
+session.cookie_httponly = 1
 session.use_only_cookies = 1
 session.cookie_secure = 1
 
+# Disable the X-Powered-By response header.
 expose_php = Off
+
+# Disable the on-page display of PHP errors.
 display_errors = Off
 
+# Disable URL fopen and includes.
 allow_url_fopen = Off
 allow_url_include = Off
-</code></pre><br>
-            </div>
+
+# Disable file uploads.
+file_uploads = Off
+</code></pre>
+
+          <p>After applying any of these changes, reboot Apache.</p>
+
+          <p><code>sudo service apache2 restart</code></p><br>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h3>Location</h3>
-                        <p><a class="light-link" href="https://www.youtube.com/watch?v=QoHSPRslJXs">Melbourne</a>.</p>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Around the Web</h3>
-                        <ul class="list-inline">
-                            <li>
-                                <a href="https://github.com/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://linkedin.com/in/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://www.facebook.com/aghorler" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>About Me</h3>
-                        <p>I am an Information Technology student.</p>
-                    </div>
-                </div>
+      <div class="footer-above">
+        <div class="container">
+          <div class="row">
+            <div class="footer-col col-md-4">
+              <h3>Location</h3>
+              <p><a class="light-link" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
             </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
-                    </div>
-                </div>
+            <div class="footer-col col-md-4">
+              <h3>Around the Web</h3>
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
+                    <i class="fa fa-fw fa-github"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
+                    <i class="fa fa-fw fa-facebook"></i>
+                  </a>
+                </li>
+              </ul>
             </div>
+            <div class="footer-col col-md-4">
+              <h3>About Me</h3>
+              <p>I am an Information Technology student.</p>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="footer-below">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
-        <a class="btn btn-primary" href="#page-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
     </div>
 
-    <!-- jQuery -->
-    <script src="/vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/popper/popper.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/openpgpjs/openpgp.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="/js/freelancer.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../js/freelancer.min.js"></script>
 
 </body>
 

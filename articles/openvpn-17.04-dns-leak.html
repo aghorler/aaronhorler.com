@@ -8,15 +8,15 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="How to root or update a Nexus Android using only open source tools.">
+    <meta name="description" content="Preventing DNS leaks with OpenVPN in Ubuntu 17.04.">
     <meta name="author" content="Aaron Horler">
-    <meta name="url" content="https://aaronhorler.com/articles/nexus-root-update.html">
+    <meta name="url" content="https://aaronhorler.com/articles/openvpn-17.04-dns-leak.html">
 
     <!-- Privacy -->
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="x-dns-prefetch-control" content="off">
 
-    <title>How to root or update a Nexus Android using only open source tools. | Aaron Horler</title>
+    <title>Preventing DNS leaks with OpenVPN in Ubuntu 17.04. | Aaron Horler</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -68,111 +68,88 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <section>
       <div class="container">
         <div class="col-lg-12 text-center">
-          <br><h3>How to root or update a Nexus Android using only open source tools.</h3>
+          <br><h3>Preventing DNS leaks with OpenVPN in Ubuntu 17.04.</h3>
           <hr class="star-primary">
         </div>
         <div id="article-pad">
-          <p>This is a simple guide to updating and rooting a Nexus device using Linux, and entirely open source tools.</p>
+          <p>I've used OpenVPN for many years, and DNS leaks have been a persistent issue across OpenVPN versions and operating systems - that I've resolved using various methods in each case.</p>
 
-          <p>This guide assumes you have unlocked your bootloader.</p><br>
+          <p>I recently upgraded to Ubuntu 17.04, and I again experienced DNS leaks.</p>
+
+          <p>This guide details the process I underwent to prevent such leaks.</p><br>
 
           <hr>
 
-          <h3>To update Android.</h3>
+          <h4>1. Install update-systemd-resolved by jonathanio.</h4>
 
-          <h4>1. Download the latest factory image from Google.</h4>
+          <p><a class="visible-link" href="https://github.com/jonathanio/update-systemd-resolved">update-systemd-resolved</a> is a helper script that directly updates the system's DNS settings on connection to an OpenVPN server, and resets them on disconnection.</p>
 
-          <p>Visit the <a class="visible-link" href="https://developers.google.com/android/images">Factory Images for Nexus and Pixel Devices</a> page, locate your device, and download the latest update.</p>
+          <p>Installation instructions are detailed <a class="visible-link" href="https://github.com/jonathanio/update-systemd-resolved#installation">here</a>, but, for simplicity, I will repeat exactly what I did.</p>
 
-          <p>For this guide, I'm using a Nexus 6P.</p>
+          <p>Note that I have <a class="visible-link" href="https://github.com/aghorler/update-systemd-resolved">forked</a> this repository and added kill switch functionality using UFW. If you're interested in a kill switch, you can use my fork instead.</p>
 
-          <p>As of writing this article, the latest version of Android for the Nexus 6P (angler) is 7.1.2 (N2G47W, Jun 2017).</p>
-
-          <p>The update will download as a ZIP file. Extract it.</p><br>
-
-          <h4>2. Install ADB and Fastboot.</h4>
+          <p>Clone the respository, and compile.</p>
 
           <p><code>sudo apt update</code></p>
 
-          <p><code>sudo apt install adb fastboot</code></p><br>
+          <p><code>sudo apt install git</code></p>
 
-          <h4>3. Update.</h4>
+          <p><code>git clone https://github.com/jonathanio/update-systemd-resolved.git</code></p>
 
-          <p>First, place your device into USB debugging mode via Settings > Developer options > Enable USB Debugging.</p>
+          <p><code>cd update-systemd-resolved</code></p>
 
-          <p>You may need to <a class="visible-link" href="https://developer.android.com/studio/debug/dev-options.html">enable Developer options</a>.</p>
+          <p><code>make</code></p>
 
-          <p>Move to your extracted ZIP archive.</p>
+          <p>Ensure that systemd-resolved is enabled and running.</p>
 
-          <p><code>cd ~/Downloads/angler-n2g47w</code></p>
+          <p><code>sudo systemctl enable systemd-resolved.service</code></p>
 
-          <p>Start ADB and check for your device. A prompt will likely appear on your device seeking approval. Accept it.</p>
+          <p><code>sudo systemctl start systemd-resolved.service</code></p>
 
-          <p><code>sudo adb devices</code></p>
+          <p>Now, update /etc/nsswitch.conf.</p>
 
-          <p>Boot your device into fastboot mode.</p>
+          <p><code>sudo nano /etc/nsswitch.conf</code></p>
 
-          <p><code>sudo adb reboot-bootloader</code></p>
+          <p>Find the line starting with <code>hosts: </code>, and alter it as below.</p>
 
-          <p>Flash the updated bootloader.</p>
+          <p><code>hosts: files resolve myhostname</code></p><br>
 
-          <p><code>sudo fastboot flash bootloader bootloader-angler-angler-03.68.img</code></p>
+          <h4>2. Alter your OpenVPN configuration file/s.</h4>
 
-          <p><code>sudo fastboot reboot-bootloader</code></p>
+          <p>An OpenVPN configuration file usually uses the .ovpn file extension, and is used to connect to a specific server.</p>
 
-          <p>Flash the updated radio.</p>
+          <p>Locate it, and open it in a text editor.</p>
 
-          <p><code>sudo fastboot flash radio radio-angler-angler-03.81.img</code></p>
+          <p><code>nano example.ovpn</code></p>
 
-          <p><code>sudo fastboot reboot-bootloader</code></p>
+           <p>Add the following lines.</p>
 
-          <p>Finally, update fully. This command will not wipe your device.</p>
+          <pre><code class="code-scroll">dhcp-option DNSSEC allow-downgrade
+dhcp-option DOMAIN-ROUTE .
 
-          <p><code>sudo fastboot update image-angler-n2g47w.zip</code></p>
+script-security 2
+setenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+up /etc/openvpn/scripts/update-systemd-resolved
+down /etc/openvpn/scripts/update-systemd-resolved
+down-pre</code></pre>
 
-          <p>Congratulations. Your device will reboot normally, with an updated firmware.</p>
+          <p><code>dhcp-option DNSSEC allow-downgrade</code> will enable <a class="visible-link" href="https://www.icann.org/resources/pages/dnssec-qaa-2014-01-29-en">DNSSEC</a> if the server supports it. If you know your server supports DNSSEC (and you don't want to allow downgrades), you can change <code>allow-downgrade</code> to <code>yes</code>.</p>
 
-          <hr>
+          <p><code>dhcp-option DOMAIN-ROUTE .</code> will route all DNS requests through the OpenVPN-specified DNS server.</p>
 
-          <h3>To root Android.</h3>
+          <p>All other lines are required for running the script.</p><br>
 
-          <p>Traditionally, SuperSU by Chainfire has been used to root Android devices. SuperSU was recently sold to a Chinese company, and was never open source even under Chainfire.</p>
+          <h4>3. Connect using the terminal.</h4>
 
-          <p>In this guide, I'll be using <a class="visible-link" href="https://forum.xda-developers.com/apps/magisk">Magisk</a> - which is open source.</p><br>
+          <p>Do not connect to OpenVPN using the Network Manager (network-manager-openvpn-gnome). This will guarantee DNS leaks.</p>
 
-          <h4>1. Download Magisk, and other, dependancies.</h4>
+          <p>Instead run OpenVPN from the command line.</p>
 
-          <p>Download the Magisk flashable ZIP from <a class="visible-link" href="https://tiny.cc/latestmagisk">here</a>.</p>
+          <p><code>sudo openvpn --config example.ovpn</code></p>
 
-          <p>Download the Magisk Manager APK from <a class="visible-link" href="https://github.com/topjohnwu/MagiskManager/releases">here</a>.</p>
+          <p>If you're concerned about not being notified of disconnects, I advise you use <a class="visible-link" href="https://github.com/aghorler/update-systemd-resolved">my fork of update-systemd-resolved</a> that implements a simple UFW killswitch.</p>
 
-          <p>And, finally, download TWRP from <a class="visible-link" href="https://twrp.me/Devices/">here</a>. This will be an IMG file.</p>
-
-          <p>Move these dependancies to your device, excluding TWRP.</p><br>
-
-          <h4>2. Boot temporarily to TWRP.</h4>
-
-          <p><code>sudo adb reboot-bootloader</code></p>
-
-          <p><code>sudo fastboot boot ~/Downloads/twrp-3.1.1-0-angler.img</code></p>
-
-          <p>On your device, select not to alter the system partition, and enter your device password/PIN code.</p><br>
-
-          <h4>3. Flash Magisk.</h4>
-
-          <p>In TWRP, select to flash a ZIP. Find the Magisk ZIP on your internal storage, and flash it normally.</p>
-
-          <p>Finally, reboot your device. Do not opt to install any TWRP app.</p><br>
-
-          <h4>4. Install Magisk Manager.</h4>
-
-          <p>Using a file manager, install the Magisk Manager APK.</p>
-
-          <p><a class="visible-link" href="https://github.com/arpitkh96/AmazeFileManager">Amaze File Manager</a> is open source.</p>
-
-          <p>You should now have root access, managable via the Magisk Manager app.</p>
-
-          <p>Features like systemless hosts (for ad blocking) and BusyBox can be enabled via Magisk Manager settings.</p>
+          <p>You should no longer be experiencing DNS leaks! <a class="visible-link" href="https://dnsleaktest.com/">Test here</a>.
         </div>
       </div>
     </section>

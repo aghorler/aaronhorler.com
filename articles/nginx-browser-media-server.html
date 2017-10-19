@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Living is easy with eyes closed, misunderstanding all you see.
+It's getting hard to be someone, but it all works out; it doesn't matter much to me. -->
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Creating a simple nginx local media server for in-browser playback.">
+    <meta name="author" content="Aaron Horler">
+    <meta name="url" content="https://aaronhorler.com/articles/nginx-browser-media-server.html">
+
+    <!-- Privacy -->
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+
+    <title>Creating a simple nginx local media server for in-browser playback. | Aaron Horler</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/freelancer.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#102a45">
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../#portfolio">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <br>
+
+    <section>
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <br><h3>Creating a simple nginx local media server for in-browser playback.</h3>
+          <hr class="star-primary">
+        </div>
+        <div id="article-pad">
+          <p>A simple means to serve media locally (and even perhaps over the Internet), is to create a simple web server to index and serve the files in a directory.</p>
+
+          <p>This can be improved by converting all content served to formats playable by modern browsers.</p>
+
+          <p>This guide covers the installation of nginx for this purpose, and using ffmpeg to convert media to a browser-playable format.</p><br>
+
+          <hr>
+
+          <h4>1. Create your media directory.</h4>
+
+          <p><code>mkdir ~/media/</code></p>
+
+          <p><code>chmod -R 755 ~/media/</code></p>
+
+          <p>All files and sub-directories inside of this directory will be served by the server.</p><br>
+
+          <h4>2. Install and configure nginx.</h4>
+
+          <p><code>sudo apt update &amp;&amp; sudo apt install nginx</code></p><br>
+
+          <h5>Option 1 - Using TLS (HTTPS).</h5>
+
+          <p>If you intend to open this server to the Internet, TLS is a requirement. Inside of your local network, however, TLS is not so much of a requirement.</p>
+
+          <p>There's no disadvantage to using TLS beyond the increased number of configuration steps.</p>
+
+          <p>This guide instructs you to generate a self-signed certificate. If you can acquire a trusted certificate, skip the relevant steps and alter the nginx configuration file accordingly.</p>
+
+          <p>Note that browsers will dispaly a bypassable error if you use a self-signed certificate.</p><br>
+
+          <p>Generate a private key.</p>
+
+          <p><code>sudo openssl ecparam -genkey -name secp384r1 > /etc/ssl/private/privkey.pem</code></p>
+
+          <p>Generate a self-signed certificate.</p>
+
+          <p><code>sudo openssl req -new -x509 -key /etc/ssl/private/privkey.pem -out /etc/ssl/certs/cert.pem -days 3650</code></p>
+
+          <p>Restrict permissions on the private key and certificate.</p>
+
+          <p><code>sudo chown root: /etc/ssl/private/privkey.pem</code></p>
+
+          <p><code>sudo chown root: /etc/ssl/certs/cert.pem</code></p>
+
+          <p><code>sudo chmod 600 /etc/ssl/private/privkey.pem</code></p>
+
+          <p><code>sudo chmod 600 /etc/ssl/certs/cert.pem</code></p>
+
+          <p>Create an nginx configuration file.</p>
+
+          <p><code>sudo nano /etc/nginx/conf.d/default.conf</code></p>
+
+          <p>Use the template below.</p>
+
+          <pre><code class="code-scroll">server {
+    # Listen on port 443, enable TLS, and HTTP/2.
+    listen 443 ssl http2;
+    ssl on;
+
+    # Certificate and private key for TLS.
+    ssl_certificate  /etc/ssl/certs/cert.pem;
+    ssl_certificate_key  /etc/ssl/private/privkey.pem;
+
+    # TLS options.
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+
+    # Modern TLS protocol and ciphers.
+    ssl_protocols TLSv1.2;
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+    ssl_ecdh_curve secp384r1;
+    ssl_prefer_server_ciphers on;
+
+    # Enable HSTS.
+    add_header Strict-Transport-Security "max-age=63072000";
+
+    # Various other standard security headers.
+    add_header Referrer-Policy "no-referrer";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Frame-Options "DENY";
+    add_header X-XSS-Protection "1; mode=block";
+
+    # CSP to only allow local content.
+    add_header Content-Security-Policy "default-src 'self'; frame-ancestors 'none'; sandbox";
+
+    # Optionally, if your (trusted) certificate supports it, enable OCSP.
+    # ssl_stapling on;
+    # ssl_stapling_verify on;
+    # ssl_trusted_certificate /etc/letsencrypt/ecdsa/example.com/0001_chain.pem;
+
+    location / {
+        # Media location.
+        root /home/example/media;
+
+        # Turn on file indexing.
+        autoindex on;
+    }
+
+    # Your local DNS resolver.
+    resolver 192.168.0.100;
+}
+
+# Redirect HTTP to HTTPS.
+server {
+   listen 80;
+   return 301 https://$host$request_uri;
+}</code></pre>
+
+          <p>Restart nginx.</p>
+
+          <p><code>sudo service nginx restart</code></p><br>
+
+          <h5>Option 2 - Using plaintext only (HTTP).</h5>
+
+          <p>Create an nginx configuration file.</p>
+
+          <p><code>sudo nano /etc/nginx/conf.d/default.conf</code></p>
+
+          <p>Use the template below.</p>
+
+          <pre><code class="code-scroll">server {
+    # Listen on port 80.
+    listen 80;
+
+    # Various standard security headers.
+    add_header Referrer-Policy "no-referrer";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Frame-Options "DENY";
+    add_header X-XSS-Protection "1; mode=block";
+
+    # CSP to only allow local content.
+    add_header Content-Security-Policy "default-src 'self'; frame-ancestors 'none'; sandbox";
+
+    location / {
+        # Media location.
+        root /home/example/media;
+
+        # Turn on file indexing.
+        autoindex on;
+    }
+
+    # Your local DNS resolver.
+    resolver 192.168.0.100;
+}</code></pre>
+
+          <p>Restart nginx.</p>
+
+          <p><code>sudo service nginx restart</code></p><br>
+
+          <h5>Optionally - Use authentication.</h5>
+
+          <p>Depending on the content you're serving, you may want to use password authentication.</p>
+
+          <p>This is absolutely required if you're serving copyrighted material to the Internet, or to a large local network.</p>
+
+          <p>To securely implement password authentication, it's realistically required that you use TLS.</p><br>
+
+          <p>Install apache2-utils.</p>
+
+          <p><code>sudo apt update &amp;&amp; sudo apt install apache2-utils</code></p>
+
+          <p>Create a user. For example, <em>alice</em>.</p>
+
+          <p><code>sudo htpasswd -c /etc/nginx/.htpasswd alice</code></p>
+
+          <p>You can remove <code>- c</code> to add additional users, although there's no reason to add additional users in this configuration.</p>
+
+          <p><code>sudo htpasswd /etc/nginx/.htpasswd bob</code></p>
+
+          <p>Alter your nginx configuration file location block.</p>
+
+          <p><code>sudo nano /etc/nginx/conf.d/default.conf</code></p>
+
+          <p>Alter only the location block as below.</p>
+
+          <pre><code class="code-scroll">location / {
+    # Media location.
+    root /home/example/media;
+
+    # Turn on file indexing.
+    autoindex on;
+
+    # Enable basic authentication.
+    auth_basic "Password required.";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}</code></pre>
+
+          <p>Restart nginx.</p>
+
+          <p><code>sudo service nginx restart</code></p><br>
+
+          <h4>3. Convert media to formats playable by modern browsers.</h4>
+
+          <p>Install ffmpeg.</p>
+
+          <p><code>sudo apt update &amp;&amp; sudo apt install ffmpeg</code></p><br>
+
+          <h5>Video media.</h5>
+
+          <p>The standard video format supported by modern browsers is the MP4 using the H.264 video codec and the AAC audio codec.</p>
+
+          <p>Using ffmpeg, convert a single video file.</p>
+
+          <p><code>ffmpeg -i example.mkv -vcodec h264 -acodec aac example.mp4</code></p>
+
+          <p>Using a bash script to convert all AVI and MKV files in a directory (excluding sub-directories).</p>
+
+          <pre><code class="code-scroll">#! /bin/bash
+
+# Replace spaces with underscores. This is required for bash compatibility.
+for file in *;
+do
+    mv "$file" `echo $file | tr ' ' '_'` ;
+done
+
+# Convert AVI and MKV files to H264/AAC MP4 files.
+for i in *.avi *.mkv;
+do
+    ffmpeg -i $i -vcodec h264 -acodec aac $i.mp4;
+done
+
+# Move old files.
+mkdir original
+mv *.avi original/
+mv *.mkv original/</code></pre><br>
+
+          <h5>Audio media.</h5>
+
+          <p>Many audio formats are supported natively by most browsers. AAC and MP3 are, however, guaranteed to be supported by all modern browsers.</p>
+
+          <p>Using ffmpeg, convert a single audio file to AAC.</p>
+
+          <p><code>ffmpeg -i example.wav -acodec aac example.m4a</code></p>
+
+          <p>Or, MP3.</p>
+
+          <p><code>ffmpeg -i example.wav -acodec mp3 example.mp3</code></p>
+
+          <p>You could also manipulate the bash script for video conversion to perform conversion on audio files.</p><br>
+
+          <h4>4. You are done.</h4>
+
+          <p>Congratulations! You can now browse and play content in a browser by navigating to the IP address or hostname of your chosen system.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <div class="footer-above">
+        <div class="container">
+          <div class="row">
+            <div class="footer-col col-md-4">
+              <h3>Location</h3>
+              <p><a class="light-link" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
+            </div>
+            <div class="footer-col col-md-4">
+              <h3>Around the Web</h3>
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
+                    <i class="fa fa-fw fa-github"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
+                    <i class="fa fa-fw fa-facebook"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col col-md-4">
+              <h3>About Me</h3>
+              <p>I am an Information Technology student.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-below">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/popper/popper.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/openpgpjs/openpgp.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="../js/freelancer.min.js"></script>
+
+</body>
+
+</html>

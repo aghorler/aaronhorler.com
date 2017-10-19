@@ -124,7 +124,23 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>This should now work.</p>
 
-          <p><code>sudo a2enmod http2</code></p><br>
+          <p><code>sudo a2enmod http2</code></p>
+
+          <p>Except - HTTP/2 will <a class="visible-link" href="https://httpd.apache.org/docs/trunk/howto/http2.html#mpm-config">not actually work</a>. Apache, by default, uses the prefork MPM - which does not support HTTP/2.</p>
+
+          <p>Switch to the <a class="visible-link" href="https://httpd.apache.org/docs/2.4/mod/event.html">event MPM</a>.</p>
+
+          <p><code>sudo a2dismod mpm_prefork</code></p>
+
+          <p><code>sudo a2enmod mpm_event</code></p>
+
+          <p>If you're using PHP, it will not function with the event MPM. This can be resolved by switching to <a class="visible-link" href="https://php-fpm.org/">PHP-FPM</a>. Remove your current PHP package first.</p>
+
+          <p><code>sudo apt install php7.0-fpm</code></p>
+
+          <p><code>sudo a2enmod proxy_fcgi setenvif</code></p>
+
+          <p><code>sudo a2enconf php7.0-fpm</code></p><br>
 
           <hr>
 

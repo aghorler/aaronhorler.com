@@ -8,7 +8,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Preventing DNS leaks with OpenVPN in Ubuntu 17.04.">
+    <meta name="description" content="How to patch an outdated consumer router against KRACK.">
     <meta name="author" content="Aaron Horler">
     <meta name="url" content="https://aaronhorler.com/articles/openvpn-17.04-dns-leak.html">
 
@@ -16,7 +16,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="x-dns-prefetch-control" content="off">
 
-    <title>Preventing DNS leaks with OpenVPN in Ubuntu 17.04. | Aaron Horler</title>
+    <title>How to patch an outdated consumer router against KRACK. | Aaron Horler</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -68,88 +68,77 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <section>
       <div class="container">
         <div class="col-lg-12 text-center">
-          <br><h3>Preventing DNS leaks with OpenVPN in Ubuntu 17.04.</h3>
+          <br><h3>How to patch an outdated consumer router against KRACK.</h3>
           <hr class="star-primary">
         </div>
         <div id="article-pad">
-          <p>I've used OpenVPN for many years, and DNS leaks have been a persistent issue across OpenVPN versions and operating systems - that I've resolved using various methods in each case.</p>
+          <p>If you're using a comsumer router, it's probably vulnerable to <a class="visible-link" href="https://en.wikipedia.org/wiki/KRACK">KRACK</a>.</p>
 
-          <p>I recently upgraded to Ubuntu 17.04, and I again experienced DNS leaks.</p>
-
-          <p>This guide details the process I underwent to prevent such leaks.</p><br>
+          <p>This small guide covers installing the <a class="visible-link" href="https://lede-project.org/">LEDE</a> firmware, and ensuring wpad is updated.</p><br>
 
           <hr>
 
-          <h4>1. Install update-systemd-resolved by jonathanio.</h4>
+          <h4>1. Install LEDE.</h4>
 
-          <p><a class="visible-link" href="https://github.com/jonathanio/update-systemd-resolved">update-systemd-resolved</a> is a helper script that directly updates the system's DNS settings on connection to an OpenVPN server, and resets them on disconnection.</p>
+          <p>Not all routers are supported by LEDE. Search for your router <a class="visible-link" href="https://lede-project.org/toh/start">here</a> to verify support.</p>
 
-          <p>Installation instructions are detailed <a class="visible-link" href="https://github.com/jonathanio/update-systemd-resolved#installation">here</a>, but, for simplicity, I will repeat exactly what I did.</p>
+          <p>If your router is suported, click <em>View/Edit data</em> in the <em>Device Techdata</em> column. Download the <em>Firmware LEDE Install URL</em> firmware.</p> 
 
-          <p>Note that I have <a class="visible-link" href="https://github.com/aghorler/update-systemd-resolved">forked</a> this repository and added kill switch functionality using UFW. If you're interested in a kill switch, you can use my fork instead.</p>
+          <p>If your router is running another custom firmware, <strong>properly</strong> revert to the factory firmware first. DD-WRT, for example, provide a reversion binary to return to factory firmware (on a per-router basis).</p>
 
-          <p>Clone the respository, and compile.</p>
+          <p><strong>Exercise caution</strong> when flashing custom router firmware. It's possible to brick your router if you flash incorrect firmware. Do not power off the router during the flashing process. It's also a safe idea to not reboot the router for 20-30 minutes after flashing. Do not reboot the router from the power source (do so via the GUI, or SSH).</p>
 
-          <p><code>sudo apt update</code></p>
+          <p>By default, LEDE uses the local IP address <em>192.168.1.1</em>. The router GUI will be available via this address after successfully flashing the firmware.</p>
 
-          <p><code>sudo apt install git</code></p>
+          <p>The default username is <em>root</em>, and the default password is blank (as in an empty string). Set a password.</p>
 
-          <p><code>git clone https://github.com/jonathanio/update-systemd-resolved.git</code></p>
+          <h4>2. Verifying LEDE is not vulnerable to KRACK.</h4>
 
-          <p><code>cd update-systemd-resolved</code></p>
+          <p>LEDE itself is patched against KRACK since version <em>17.01.4</em>. If you flashed a verison equal to, or newer than, this version - you are secure.</p>
 
-          <p><code>make</code></p>
+          <p>You can manually verify (and upgrade) wpad via <em>opkg</em>.</p>
 
-          <p>Ensure that systemd-resolved is enabled and running.</p>
+          <h5>SSH into the router</h5>
 
-          <p><code>sudo systemctl enable systemd-resolved.service</code></p>
+          <p><code>ssh root@192.168.1.1</code></p>
 
-          <p><code>sudo systemctl start systemd-resolved.service</code></p>
+          <p>In Windows, you'll need to use PuTTY.</p>
 
-          <p>Now, update /etc/nsswitch.conf.</p>
+          <p>Check the current version of <em>wpad</em> (or <em>wpad-mini</em> in many releases).</p>
 
-          <p><code>sudo nano /etc/nsswitch.conf</code></p>
+          <p><code>opkg info wpad-mini</code></p>
 
-          <p>Find the line starting with <code>hosts: </code>, and alter it as below.</p>
+          <p><em>wpad</em> is patched against KRACK since version <em>2016-12-19-ad02e79d-5</em>.</p>
 
-          <p><code>hosts: files resolve myhostname</code></p><br>
+          <p>Also check the current version of <em>hostapd-common</em>.</p>
 
-          <h4>2. Alter your OpenVPN configuration file/s.</h4>
+          <p><code>opkg info hostapd-common</code></p>
 
-          <p>An OpenVPN configuration file usually uses the .ovpn file extension, and is used to connect to a specific server.</p>
+          <p><em>hostapd-common</em> is patched against KRACK since version <em>2016-12-19-ad02e79d-5</em>.</p>
 
-          <p>Locate it, and open it in a text editor.</p>
+          <p>Upgrade packages using <em>opkg</em>.</p>
 
-          <p><code>nano example.ovpn</code></p>
+          <p><code>opkg update</code></p>
 
-          <p>Add the following lines.</p>
+          <p>List all upgradable packages.</p>
 
-          <pre><code class="code-scroll">dhcp-option DNSSEC allow-downgrade
-dhcp-option DOMAIN-ROUTE .
+          <p><code>opkg list-upgradable</code></p>
 
-script-security 2
-setenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-up /etc/openvpn/scripts/update-systemd-resolved
-down /etc/openvpn/scripts/update-systemd-resolved
-down-pre</code></pre>
+          <p>To upgrade a package, use <em>opkg upgrade</em>.
 
-          <p><code>dhcp-option DNSSEC allow-downgrade</code> will enable <a class="visible-link" href="https://www.icann.org/resources/pages/dnssec-qaa-2014-01-29-en">DNSSEC</a> if the server supports it. If you know your server supports DNSSEC (and you don't want to allow downgrades), you can change <code>allow-downgrade</code> to <code>yes</code>.</p>
+          <p>This command will upgrade <em>wpad-mini</em> and <em>hostapd-common</em>. You can safely upgrade all upgradable packages.</p>
 
-          <p><code>dhcp-option DOMAIN-ROUTE .</code> will route all DNS requests through the OpenVPN-specified DNS server.</p>
+          <p><code>opkg upgrade wpad-mini hostapd-common</code></p>
 
-          <p>All other lines are required for running the script.</p><br>
+          <p>Finally, reboot the router.</p>
 
-          <h4>3. Connect using the terminal.</h4>
+          <p><code>reboot</code></p>
 
-          <p>Do not connect to OpenVPN using the Network Manager (network-manager-openvpn-gnome). This will guarantee DNS leaks.</p>
+          <h4>3. You are done.</h4>
 
-          <p>Instead run OpenVPN from the command line.</p>
+          <p>When configuring WiFi in LEDE, use <em>WPA2-PSK</em> as the Encryption algorithm and <em>Force CCMP (AES)</em> as the Cipher.</p>
 
-          <p><code>sudo openvpn --config example.ovpn</code></p>
-
-          <p>If you're concerned about not being notified of disconnects, I advise you use <a class="visible-link" href="https://github.com/aghorler/update-systemd-resolved">my fork of update-systemd-resolved</a> that implements a simple UFW killswitch.</p>
-
-          <p>You should no longer be experiencing DNS leaks! <a class="visible-link" href="https://dnsleaktest.com/">Test here</a>.
+          <p>LEDE, since version <em>17.01.4</em>, provides a GUI option to complicate attacks like KRACK - this can optionally be enabled.</p>
         </div>
       </div>
     </section>

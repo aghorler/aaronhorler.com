@@ -452,6 +452,9 @@ footer {
 div#article-pad {
   padding: 10px }
 
+code {
+  word-wrap: break-word; }
+
 code.code-scroll {
   overflow-x: scroll;
   word-wrap: normal }

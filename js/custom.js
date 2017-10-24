@@ -95,6 +95,16 @@ function encryptMessage(){
   }
 }
 
+function loadCSS(){
+  document.getElementById("freelancer").rel = 'stylesheet';
+  document.getElementById("font-awesome").rel = 'stylesheet';
+  document.getElementById("google-font-01").rel = 'stylesheet';
+  document.getElementById("google-font-02").rel = 'stylesheet';
+  document.getElementById("bootstrap").rel = 'stylesheet';
+}
+
+window.addEventListener("load", loadCSS);
+
 pluto.addEventListener("click", spinPluto);
 document.addEventListener('DOMContentLoaded', spinPluto);
 document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);

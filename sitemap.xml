@@ -40,4 +40,12 @@
     <loc>https://aaronhorler.com/articles/nginx-browser-media-server.html</loc>
     <changefreq>never</changefreq>
   </url>
+  <url>
+    <loc>https://aaronhorler.com/articles/krack-patch.html</loc>
+    <changefreq>never</changefreq>
+  </url>
+  <url>
+    <loc>https://aaronhorler.com/public.asc</loc>
+    <changefreq>yearly</changefreq>
+  </url>
 </urlset>

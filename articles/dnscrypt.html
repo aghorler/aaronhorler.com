@@ -72,15 +72,17 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <hr class="star-primary">
         </div>
         <div id="article-pad">
-          <p>This is a guide to using a Raspberry Pi, or another Linux-based device, as a local dnsmasq-based DNSCrypt forwarder.</p>
+          <p>This is a guide to using a Raspberry Pi, or any Linux-based device, as a local dnsmasq-based DNSCrypt forwarder.</p>
+  
+          <p>DNSCrypt is designed to protect DNS traffic between a client and a DNS server. DNSCrypt clients are easy to install and configure for most desktop operating systems. Mobile and other devices, however, are either unsupported, or complicated, to configure.</p>
 
-          <p>This will secure the DNS requests leaving your local network.</p><br>
+          <p>This guide will secure the outgoing DNS requests of a local network, rather than specific devices.</p><br>
 
           <hr>
 
           <h4>1. Download and install dnscrypt-autoinstall.</h4>
 
-          <p><a class="visible-link" href="https://github.com/simonclausen/dnscrypt-autoinstall">dnscrypt-autoinstall</a> is probably the easiest method of installing DNSCrypt as a service on Linux.</p>
+          <p><a class="visible-link" href="https://github.com/simonclausen/dnscrypt-autoinstall">dnscrypt-autoinstall</a> is probably the easiest means to install DNSCrypt as a service on Linux.</p>
 
           <p>Download dnscrypt-auto.</p>
 
@@ -94,19 +96,31 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p><code>sudo ./dnscrypt-autoinstall</code></p>
 
-          <p>dnscrypt-autoinstall will install DNSCrypt and all dependancies. It will also ask to select a resolver. For this guide, I'm using Cisco's OpenDNS - which is option 10.</p><br>
+          <p>dnscrypt-autoinstall will install DNSCrypt and all dependencies. It will also ask to select a resolver. For this guide, I'm using Cisco's OpenDNS - which is option 10.</p>
 
-          <h4>2. Change DNSCrypt's port.</h4>
+          <p>After installation the device should be using DNSCrypt. If you opted for OpenDNS, you can verify it's functionality using <em>dig</em>.</p>
 
-          <p>DNSCrypt (dnscrypt-proxy) runs on localhost port 53 (53 is the default port for DNS).</p>
+          <p><code>dig debug.opendns.com TXT</code></p>
+
+          <p>Look for <em>dnscrypt enabled</em> in one of the TXT records.</p><br>
+
+          <h4>2. Change DNSCrypt's listening port.</h4>
+
+          <p>DNSCrypt (dnscrypt-proxy) listens on localhost port 53 (53 is the default port for DNS).</p>
 
           <p>We intend to run our own dnsmasq server on port 53, so we must change this.</p>
+
+          <p>First, install dnsmasq. It will fail to start.</p>
+
+          <p><code>sudo apt install dnsmasq</code></p>
 
           <p>Edit dnscrypt-autoinstall.conf</p>
 
           <p><code>sudo nano /etc/systemd/system/dnscrypt-autoinstall.conf</code></p>
 
           <p>Change <code>DNSCRYPT_LOCALPORT</code> and <code>DNSCRYPT_LOCALPORT2</code> to something unused, like port 40.</p>
+
+          <p>You'll also likely notice that <code>DNSCRYPT_RESOLVER2</code> is not set to your preference. You may change this if you object to the default secondary server.</p>
 
           <p>A copy of my dnscrypt-autoinstall.conf is below.</p>
 
@@ -122,11 +136,9 @@ DNSCRYPT_RESOLVER2=cisco</code></pre>
 
           <p><code>sudo service dnscrypt-autoinstall restart</code></p><br> 
 
-          <h4>3. Install dnsmasq and configure.</h4>
+          <h4>3. Configure dnsmasq.</h4>
 
           <p>dnsmasq will function as a DNS server that will pass DNS queries onto DNSCrypt on localhost port 40.</p>
-
-          <p><code>sudo apt install dnsmasq</code></p>
 
           <p>Edit /etc/dnsmasq.conf</p>
 
@@ -135,21 +147,22 @@ DNSCRYPT_RESOLVER2=cisco</code></pre>
           <pre><code class="code-scroll"># Never forward plain names (without a dot or domain part).
 domain-needed
 
-# Never forward addresses in the non-routed address spaces.
+# Never forward reverse-lookup queries with non-routable addresses.
 bogus-priv
 
 # Do not read /etc/resolv.conf or any other file.
 no-resolv
 
-#  Do not poll /etc/resolv.conf or other resolv files for changes and re-read.
+#  Do not poll /etc/resolv.conf or other files for changes.
 no-poll
 
 # Enable DNSSEC.
+# This will have no effect if used with upstream resolvers that do not support DNSSEC (OpenDNS, for example).
 conf-file=/usr/share/dnsmasq-base/trust-anchors.conf
 dnssec
 
 # You can block domains using this method.
-# I maintain a lightweight list at https://github.com/aghorler/lightweight-ddwrt-blocklist
+# I maintain a lightweight list at https://github.com/aghorler/lightweight-dnsmasq-blocklist
 # address=/doubleclick.net/0.0.0.0
 
 # Listen on localhost, and on the local network address.
@@ -161,9 +174,9 @@ server=127.0.0.2#40</code></pre>
 
           <p>Replace <em>192.168.0.199</em> with the local IP address of the device.</p>
 
-          <p>Restart dnsmasq</p>
+          <p>Start dnsmasq.</p>
 
-          <p><code>sudo service dnsmasq restart</code></p><br>
+          <p><code>sudo service dnsmasq start</code></p><br>
 
           <h4>4. Configure UFW as a firewall.</h4>
 
@@ -183,7 +196,9 @@ server=127.0.0.2#40</code></pre>
 
           <p>Allow incoming DNS traffic.</p>
 
-          <p><code>sudo ufw allow dns</code></p>
+          <p><code>sudo ufw allow 53/udp</code></p>
+
+          <p><code>sudo ufw allow 53/tcp</code></p>
 
           <p>Enable UFW.</p>
 
@@ -193,7 +208,15 @@ server=127.0.0.2#40</code></pre>
 
           <p>You now need to configure your router or stand-alone DHCP server to use your DNSCrypt device's local IP address for DNS. You can also statically do this per device.</p>
 
-          <p>You can verify your DNS requests are being handled correctly with a service like <a class="visible-link" href="https://dnsleaktest.com/">DNS leak test</a>.
+          <p>You can verify your DNS requests are being handled correctly with a service like <a class="visible-link" href="https://dnsleaktest.com/">DNS leak test</a>.</p>
+
+          <p>If you opted for OpenDNS, you can verify DNSCrypt's functionality using <em>dig</em> on a local Linux device.</p>
+
+          <p><code>dig debug.opendns.com TXT</code></p>
+
+          <p>Look for <em>dnscrypt enabled</em> in one of the TXT records.</p>
+
+          <p><strong>Note: </strong> If dnsmasq fails to start on boot, but can manually be started after boot, configure a static IP address on the device.<br>
         </div>
       </div>
     </section>

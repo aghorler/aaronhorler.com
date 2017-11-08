@@ -33,7 +33,7 @@
     <changefreq>never</changefreq>
   </url>
   <url>
-    <loc>https://aaronhorler.com/articles/openvpn-17.04-dns-leak.html</loc>
+    <loc>https://aaronhorler.com/articles/openvpn-17.10-dns-leak.html</loc>
     <changefreq>never</changefreq>
   </url>
   <url>
@@ -46,6 +46,10 @@
   </url>
   <url>
     <loc>https://aaronhorler.com/public.asc</loc>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://aaronhorler.com/privacy.asc</loc>
     <changefreq>yearly</changefreq>
   </url>
 </urlset>

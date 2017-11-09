@@ -8,7 +8,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="How to root or update a Nexus Android using only open source tools.">
+    <meta name="description" content="How to root or update a Nexus Android using only open source tools (in Linux).">
     <meta name="author" content="Aaron Horler">
     <meta name="url" content="https://aaronhorler.com/articles/nexus-root-update.html">
 
@@ -16,7 +16,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="x-dns-prefetch-control" content="off">
 
-    <title>How to root or update a Nexus Android using only open source tools. | Aaron Horler</title>
+    <title>How to root or update a Nexus Android using only open source tools (in Linux). | Aaron Horler</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -68,10 +68,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <section>
       <div class="container">
         <div class="col-lg-12 text-center">
-          <br><h3>How to root or update a Nexus Android using only open source tools.</h3>
+          <br><h3>How to root or update a Nexus Android using only open source tools (in Linux).</h3>
           <hr class="star-primary">
         </div>
-        <div id="article-pad">
+        <div class="col-lg-12">
+          <p class="text-muted"><strong>Last updated:</strong> November 9, 2017.</p>
           <p>This is a simple guide to updating and rooting a Nexus device using Linux, and entirely open source tools.</p>
 
           <p>This guide assumes you have unlocked your bootloader.</p><br>
@@ -86,7 +87,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>For this guide, I'm using a Nexus 6P.</p>
 
-          <p>As of writing this article, the latest version of Android for the Nexus 6P (angler) is 7.1.2 (N2G47W, Jun 2017).</p>
+          <p>As of updating this article, the latest version of Android for the Nexus 6P (angler) is 8.0.0 (OPR5.170623.011, Nov 2017).</p>
 
           <p>The update will download as a ZIP file. Extract it.</p><br>
 
@@ -116,19 +117,19 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>Flash the updated bootloader.</p>
 
-          <p><code>sudo fastboot flash bootloader bootloader-angler-angler-03.68.img</code></p>
+          <p><code>sudo fastboot flash bootloader bootloader-angler-angler-03.77.img</code></p>
 
           <p><code>sudo fastboot reboot-bootloader</code></p>
 
           <p>Flash the updated radio.</p>
 
-          <p><code>sudo fastboot flash radio radio-angler-angler-03.81.img</code></p>
+          <p><code>sudo fastboot flash radio radio-angler-angler-03.84.img</code></p>
 
           <p><code>sudo fastboot reboot-bootloader</code></p>
 
           <p>Finally, update fully. This command will not wipe your device.</p>
 
-          <p><code>sudo fastboot update image-angler-n2g47w.zip</code></p>
+          <p><code>sudo fastboot update image-angler-opr5.170623.011.zip</code></p>
 
           <p>Congratulations. Your device will reboot normally, with an updated firmware.</p>
 
@@ -136,7 +137,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <h3>To root Android.</h3>
 
-          <p>Traditionally, SuperSU by Chainfire has been used to root Android devices. SuperSU was recently sold to a Chinese company, and was never open source even under Chainfire.</p>
+          <p>Traditionally, SuperSU by Chainfire has been used to root Android devices. SuperSU was recently sold to a third-party, and was never open source even under Chainfire.</p>
 
           <p>In this guide, I'll be using <a class="visible-link" href="https://forum.xda-developers.com/apps/magisk">Magisk</a> - which is open source.</p><br>
 
@@ -171,8 +172,6 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <p><a class="visible-link" href="https://github.com/arpitkh96/AmazeFileManager">Amaze File Manager</a> is open source.</p>
 
           <p>You should now have root access, managable via the Magisk Manager app.</p>
-
-          <p>Features like systemless hosts (for ad blocking) and BusyBox can be enabled via Magisk Manager settings.</p>
         </div>
       </div>
     </section>
@@ -184,7 +183,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <div class="row">
             <div class="footer-col col-md-4">
               <h3>Location</h3>
-              <p><a class="light-link" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
+              <p><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
             </div>
             <div class="footer-col col-md-4">
               <h3>Around the Web</h3>
@@ -217,7 +216,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
-              Copyright &copy; Aaron Horler 2017, using <a class="light-link" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
+              Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
             </div>
           </div>
         </div>

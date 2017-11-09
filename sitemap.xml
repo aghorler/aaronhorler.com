@@ -30,11 +30,11 @@
   </url>
   <url>
     <loc>https://aaronhorler.com/articles/dnscrypt.html</loc>
-    <changefreq>never</changefreq>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://aaronhorler.com/articles/openvpn-17.10-dns-leak.html</loc>
-    <changefreq>never</changefreq>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://aaronhorler.com/articles/nginx-browser-media-server.html</loc>

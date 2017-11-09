@@ -449,21 +449,12 @@ footer {
 .btn:focus {
   outline: none; }
 
-div#article-pad {
-  padding: 10px }
-
 code {
   word-wrap: break-word; }
 
 code.code-scroll {
   overflow-x: scroll;
   word-wrap: normal }
-
-.light-link {
-  color: #777; }
-
-.light-link:hover {
-color: #999; }
 
 .visible-link {
   color: #337ab7; }

@@ -72,7 +72,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <hr class="star-primary">
         </div>
         <div class="col-lg-12">
-          <p class="text-muted"><strong>Last updated:</strong> July, 2017.</p>
+          <p class="text-muted"><strong>Last updated:</strong> November 12, 2017.</p>
 
           <p>The mail-transfer program Sendmail can easily be configured for STARTTLS transport security using your Let's Encrypt credentials.</p><br>
 
@@ -94,9 +94,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 define(`confCACERT_PATH', `/etc/letsencrypt/live/example.com')dnl
 define(`confCACERT', `/etc/letsencrypt/live/example.com/chain.pem')dnl
 define(`confSERVER_CERT', `/etc/letsencrypt/live/example.com/cert.pem')dnl
-define(`confCLIENT_CERT', `/etc/letsencrypt/live/example.com/cert.pem')dnl
 define(`confSERVER_KEY', `/etc/letsencrypt/live/example.com/privkey.pem')dnl
-define(`confCLIENT_KEY', `/etc/letsencrypt/live/example.com/privkey.pem')dnl
 dnl#</code></pre>
 
           <p>Append the above to the end of the file, replacing example.com with your domain.</p>
@@ -107,13 +105,13 @@ dnl#</code></pre>
 define(`confCACERT_PATH', `/etc/letsencrypt/ecdsa/example.com')dnl
 define(`confCACERT', `/etc/letsencrypt/live/example.com/0001_chain.pem')dnl
 define(`confSERVER_CERT', `/etc/letsencrypt/ecdsa/example.com/0000_cert.pem')dnl
-define(`confCLIENT_CERT', `/etc/letsencrypt/ecdsa/example.com/0000_cert.pem')dnl
 define(`confSERVER_KEY', `/etc/letsencrypt/ecdsa/example.com/privkey.pem')dnl
-define(`confCLIENT_KEY', `/etc/letsencrypt/ecdsa/example.com/privkey.pem')dnl
 dnl#
 </code></pre><br>
 
-          <h4>2. Restart Sendmail</h4>
+          <h4>2. Reconfigure and restart Sendmail</h4>
+
+          <p><code>sudo -i m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf</code></p>
 
           <p><code>sudo /etc/init.d/sendmail restart</code></p>
         </div>

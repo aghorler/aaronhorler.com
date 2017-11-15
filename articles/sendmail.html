@@ -72,9 +72,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <hr class="star-primary">
         </div>
         <div class="col-lg-12">
-          <p class="text-muted"><strong>Last updated:</strong> November 12, 2017.</p>
+          <p class="text-muted"><strong>Last updated:</strong> November 15, 2017.</p>
 
-          <p>The mail-transfer program Sendmail can easily be configured for STARTTLS transport security using your Let's Encrypt credentials.</p><br>
+          <p>The mail-transfer program Sendmail can easily be configured for STARTTLS transport security using your Let's Encrypt credentials.</p>
+
+          <p>Consider also reading my article on <a class="visible-link" href="./sendmail-integrity-antispam-ubuntu.html">email integrity and anti-spam/anti-spoofing with Sendmail</a>.</p><br>
 
           <h4>1. Locate your Let's Encrypt directory.</h4>
 
@@ -111,9 +113,13 @@ dnl#
 
           <h4>2. Reconfigure and restart Sendmail</h4>
 
-          <p><code>sudo -i m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf</code></p>
+          <p><code>sudo su</code></p>
 
-          <p><code>sudo /etc/init.d/sendmail restart</code></p>
+          <p><code>m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf</code></p>
+
+          <p><code>exit</code></p>
+
+          <p><code>sudo service sendmail restart</code></p>
         </div>
       </div>
     </section>

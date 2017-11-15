@@ -45,6 +45,10 @@
     <changefreq>never</changefreq>
   </url>
   <url>
+    <loc>https://aaronhorler.com/articles/sendmail-integrity-antispam-ubuntu.html</loc>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
     <loc>https://aaronhorler.com/public.asc</loc>
     <changefreq>yearly</changefreq>
   </url>

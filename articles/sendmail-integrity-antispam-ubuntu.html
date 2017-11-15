@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Living is easy with eyes closed, misunderstanding all you see.
+It's getting hard to be someone, but it all works out; it doesn't matter much to me. -->
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Email integrity and anti-spam with Sendmail in Ubuntu 16.04+ (using SPF, DKIM, and DMARC).">
+    <meta name="author" content="Aaron Horler">
+    <meta name="url" content="https://aaronhorler.com/articles/sendmail-integrity-antispam-ubuntu.html">
+
+    <!-- Privacy -->
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+
+    <title>Email integrity and anti-spam with Sendmail in Ubuntu 16.04+ (using SPF, DKIM, and DMARC). | Aaron Horler</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/freelancer.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#102a45">
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../#portfolio">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <br>
+
+    <section>
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <br><h3>Email integrity and anti-spam with Sendmail in Ubuntu 16.04+ (using SPF, DKIM, and DMARC).</h3>
+          <hr class="star-primary">
+        </div>
+        <div class="col-lg-12">
+          <p class="text-muted"><strong>Last updated:</strong> November 15, 2017.</p>
+
+          <p>This is a simple multi-part guide to email integrity and anti-spam/anti-spoofing with Sendmail in Ubuntu 16.04+.</p>
+
+          <p>Please also read my article on <a class="visible-link" href="./sendmail.html">STARTTLS transport security with Sendmail using Let's Encrypt</a>.</p>
+
+          <p>This guide is written for <a class="visible-link" href="https://support.google.com/mail/answer/81126#authentication">compliance with Gmail</a>.</p><br>
+
+          <hr>
+
+          <h3>Reverse DNS</h3>
+
+          <p>As a precursor to these instructions, it's important reverse DNS is configured.</p>
+
+          <p>Essentially, a reverse DNS lookup on your email servers IP address should return a domain to which an <em>A</em> (for IPv4) and/or an <em>AAAA</em> (for IPv6) record exists pointing to the same IP address.</p><br>
+
+          <h4>Example (Simple)</h4>
+
+          <p>For example, in my configuration I send mail from <em>this</em> server (<em>45.76.112.111</em> and 2001:19f0:5801:2a1:5400:1ff:fe3d:aebd</em>).</p>
+
+          <p>A reverse DNS lookup for IPv4 returns <em>aaronhorler.com</em>.</p>
+
+          <p><code>host 45.76.112.111</code></p>
+
+          <p>A reverse DNS lookup for IPv6 returns <em>aaronhorler.com</em>.</p>
+
+          <p><code>host 2001:19f0:5801:2a1:5400:1ff:fe3d:aebd</code></p>
+
+          <p>The A record for the domain points to <em>45.76.112.111</em>.</p>
+
+          <p><code>dig aaronhorler.com A</code></p>
+
+          <p>The AAAA record for the domain points to <em>2001:19f0:5801:2a1:5400:1ff:fe3d:aebd</em>.</p>
+
+          <p><code>dig aaronhorler.com AAAA</code></p><br>
+
+          <hr>
+
+          <h3>SPF</h3>
+
+          <p>SPF (<a class="visible-link" href="https://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>) is a means to authorise the sending of an email. It is configured via DNS.</p><br>
+
+          <h4>1. Create an SPF record.</h4>
+
+          <p>SPF is implemented via a TXT record.</p>
+
+          <p>The <em>name</em> for the record should apply to the root domain (this is usually achieved by entering <em>@</em> or no name, but differs per provider).</p>
+
+          <p>For simple Gmail compliance, the <em>data</em> for the record can permit the IP address of a sending server.</p>
+
+          <p>My SPF record is (simply) as follows.</p>
+
+          <p><code>"v=spf1 ip6:2001:19f0:5801:2a1:5400:1ff:fe3d:aebd -all"</code></p>
+
+          <p>This record only authorises emails from the public IPv6 address of my server. You can specific an IPv4 address, and IPv6 address, or both. See all options <a class="visible-link" href="http://www.openspf.org/SPF_Record_Syntax">here</a>.</p>
+
+          <p>It's important to note that <em>my</em> current email implementation is for outgoing mail to Gmail <strong>only</strong>. If you intend to send emails to services that may not support IPv6, you need to also include an IPv4 address in the record. You can ignore IPv6 entirely if you don't use it.</p><br>
+
+          <h4>2. Test SPF with Gmail.</h4>
+
+          <p>When testing for Gmail compliance, the simplist test is to send an email to a Gmail address you operate.</p>
+
+          <p>In Gmail, open an email sent from the server. Click the downwards arrow (next to the reply button), and select "<em>Show Original</em>".</p>
+
+          <p>
+            <img class="img-fluid d-block mx-auto" src="../img/articles/spf-test.png" alt="Passed SPF test example.">
+          </p>
+
+          <p>SPF results are displayed in the summary.</p><br>
+
+          <hr>
+
+          <h3>DKIM</h3>
+
+          <p>DKIM (<a class="visible-link" href="https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail</a>) is a means to authorise the sending of an email via the use of a public and private key pair. The private key is kept private, and used to sign emails. The public key is published via DNS, for use in verifing the signature.</p><br>
+
+          <h4>1. Install OpenDKIM.</h4>
+
+          <p><code>sudo apt install opendkim opendkim-tools</code></p><br>
+
+          <h4>2. Generate a public and private key pair.</h4>
+
+          <p><code>opendkim-genkey -s default -d example.com</code></p>
+
+          <p>Replace <em>example.com</em> with your domain.</p>
+
+          <p>This command will generate two files -  <em>default.txt</em> and <em>default.private</em>.</p><br>
+
+          <h4>3. Advertise your public key via a TXT record.</h4>
+
+          <p>Yuor public key is contained in <em>default.txt</em>.</p>
+
+          <p><code>cat default.txt</code></p>
+
+          <p>The output is in bind format.</p>
+
+          <pre><code class="code-scroll">default._domainkey IN  TXT ( "v=DKIM1; h=sha256; k=rsa; "
+"p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuS1HwxQNj43Nq5fzRmWlEtEf+fcFNpCi2VlW2xfg57o6bhte7yslgtPhn4lS4Gu4Edvdzke0TDQz4M3FJcTslvapDTdDSmOoviaSxlL6IkDtHOyFtJeq3zq0YF6oUJHhUwAEOtiEyjUJksf8BvmMNbewJ4KTHU1HGtIC6UT5bm/Tgy5WeJ+bVqv+oHrtOkq+tH2EZzr6VCx/Cc"
+"4xesbcy0D/+Ev1Qbmx1moDVKy9xqmuG3Z09yfQa3MXfkC3D7h0vaII3xjR+6WggA/cigh2I0nwBrd4WX/LiayM+8rdraMpQLez1JGIUwWplcUln6RWVptQgtx2X/cmkP7uq6+VDQIDAQAB" )  ; ----- DKIM key default for example.com</code></pre>
+
+          <p>This needs to be manipulated into a TXT record where the <em>name</em> is <code>default.domainkey</code>, and the <em>data</em> is a string consisting of the <code>v</code>, <code>h</code>, <code>k</code>, and <code>p</code> values. Note that the value for <code>p</code> continues onto a second line.</p>
+
+          <p>The string data for the example TXT record from above would be as follows.</p>
+
+          <p><code>"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuS1HwxQNj43Nq5fzRmWlEtEf+fcFNpCi2VlW2xfg57o6bhte7yslgtPhn4lS4Gu4Edvdzke0TDQz4M3FJcTslvapDTdDSmOoviaSxlL6IkDtHOyFtJeq3zq0YF6oUJHhUwAEOtiEyjUJksf8BvmMNbewJ4KTHU1HGtIC6UT5bm/Tgy5WeJ+bVqv+oHrtOkq+tH2EZzr6VCx/Cc4xesbcy0D/+Ev1Qbmx1moDVKy9xqmuG3Z09yfQa3MXfkC3D7h0vaII3xjR+6WggA/cigh2I0nwBrd4WX/LiayM+8rdraMpQLez1JGIUwWplcUln6RWVptQgtx2X/cmkP7uq6+VDQIDAQAB"</code></p><br>
+
+          <h4>4. Move your private key.</h4>
+
+          <p><code>sudo mv default.private /etc/dkimkeys/</code></p>
+
+          <p><code>sudo chown opendkim: /etc/dkimkeys/default.private</code></p>
+
+          <p><code>sudo chmod 600 /etc/dkimkeys/default.private</code></p><br>
+
+          <h4>5. Configure OpenDKIM.</h4>
+
+          <p><code>sudo nano /etc/opendkim.conf</code></p>
+
+          <p>Locate, and change, the following lines.</p>
+
+          <pre><code class="code-scroll">Domain example.com
+KeyFile /etc/dkimkeys/default.private
+Selector default</code></pre>
+
+          <p>Then, configure OpenDKIM to listen on a unused port on localhost.</p>
+
+          <p><code>sudo nano /etc/default/opendkim</code></p>
+
+          <p>Append the following to the file, where <em>8100</em> (the port) can be customised.</p>
+
+          <pre><code class="code-scroll">SOCKET=inet:8100@127.0.0.1</code></pre>
+
+          <p>You can verify a port is unused using <em>netstat</em>.</p>
+
+          <p><code>netstat -tulpn | grep :8100</code></p><br>
+
+          <h4>6. Start OpenDKIM.</h4>
+
+          <p><code>sudo service opendkim start</code></p>
+
+          <p>There's currently a bug with OpenDKIM that prevents it from properly running.</p>
+
+          <p>Verify that OpenDKIM is listening on port 8100 (or the port of your choice).</p>
+
+          <p><code>netstat -tulpn | grep :8100</code></p>
+
+          <p>If it is not listening (netstat will return nothing), follow <a class="visible-link" href="https://serverfault.com/a/847442">this solution</a>.</p>
+
+          <p><code>sudo /lib/opendkim/opendkim.service.generate</code></p>
+
+          <p><code>sudo systemctl daemon-reload</code></p>
+
+          <p><code>sudo service opendkim restart</code></p>
+
+          <p>OpenDKIM should now be listening on the port.</p>
+
+          <p><code>netstat -tulpn | grep :8100</code></p><br>
+
+          <h4>7. Configure Sendmail.</h4>
+
+          <p><code>sudo nano /etc/mail/sendmail.mc</code></p>
+
+          <p>Append the following lines.</p>
+
+          <pre><code class="code-scroll">INPUT_MAIL_FILTER(`opendkim', `S=inet:8100@127.0.0.1')</code></pre>
+
+          <p>And, regenerate <em>sendmail.cf</em>.</p>
+
+          <p><code>sudo su</code></p>
+
+          <p><code>m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf</code></p>
+
+          <p><code>exit</code></p>
+
+          <p>Restart Sendmail.</p>
+
+          <p><code>sudo service sendmail restart</code></p><br>
+
+          <h4>2. Test DKIM with Gmail.</h4>
+
+          <p>When testing for Gmail compliance, the simplist test is to send an email to a Gmail address you operate.</p>
+
+          <p>In Gmail, open an email sent from the server. Click the downwards arrow (next to the reply button), and select "<em>Show Original</em>".</p>
+
+          <p>
+            <img class="img-fluid d-block mx-auto" src="../img/articles/dkim-test.png" alt="Passed DKIM test example.">
+          </p>
+
+          <p>DKIM results are displayed in the summary.</p><br>
+
+          <hr>
+
+          <h3>DMARC</h3>
+
+          <p>DMARC (<a class="visible-link" href="https://en.wikipedia.org/wiki/DMARC">Domain-based Message Authentication, Reporting and Conformance</a>) is a means to signal a policy for email compliance with your SPF and DKIM records. It's configured via DNS.</p><br>
+
+          <h4>1. Create a DMARC record.</h4>
+
+          <p>DMARC is implemented via a TXT record.</p>
+
+          <p>The <em>name</em> for the record should be <code>_dmarc</code>.</p>
+
+          <p>DMARC has many <a class="visible-link" href="https://dmarc.org/overview/">options</a>.</p>
+
+          <p>My (strict) DMARC record is as follows.</p>
+
+          <p><code>"v=DMARC1; p=reject; adkim=s; aspf=s"</code></p>
+
+          <p>This policy instructs clients (Gmail only, in my case) to reject emails that do not strictly comply with my SPF and DKIM rules.</p>
+
+          <p>Implement this carefully. Note that Gmail <a class="visible-link" href="https://support.google.com/a/answer/2466563?hl=en">recommends</a> its G Suit customers implement DMARC slowly by utilising reports and subjecting only a percentage of messages to filtering.</p><br>
+
+          <h4>2. Test DMARC with Gmail.</h4>
+
+          <p>When testing for Gmail compliance, the simplist test is to send an email to a Gmail address you operate.</p>
+
+          <p>In Gmail, open an email sent from the server. Click the downwards arrow (next to the reply button), and select "<em>Show Original</em>".</p>
+
+          <p>
+            <img class="img-fluid d-block mx-auto" src="../img/articles/dmarc-test.png" alt="Passed DKIM test example.">
+          </p>
+
+          <p>DMARC results are displayed in the summary.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <div class="footer-above">
+        <div class="container">
+          <div class="row">
+            <div class="footer-col col-md-4">
+              <h3>Location</h3>
+              <p><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
+            </div>
+            <div class="footer-col col-md-4">
+              <h3>Around the Web</h3>
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
+                    <i class="fa fa-fw fa-github"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
+                    <i class="fa fa-fw fa-facebook"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col col-md-4">
+              <h3>About Me</h3>
+              <p>I am an Information Technology student.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-below">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="../js/freelancer.min.js"></script>
+
+</body>
+
+</html>

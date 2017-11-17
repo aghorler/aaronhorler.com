@@ -78,7 +78,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>Please also read my article on <a class="visible-link" href="./sendmail.html">STARTTLS transport security with Sendmail using Let's Encrypt</a>.</p>
 
-          <p>This guide is written for <a class="visible-link" href="https://support.google.com/mail/answer/81126#authentication">compliance with Gmail</a>.</p><br>
+          <p>This guide is written for <a class="visible-link" href="https://support.google.com/mail/answer/81126#authentication">compliance with (sending to) Gmail</a>.</p><br>
 
           <hr>
 
@@ -86,11 +86,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>As a precursor to these instructions, it's important reverse DNS is configured.</p>
 
-          <p>Essentially, a reverse DNS lookup on your email servers IP address should return a domain to which an <em>A</em> (for IPv4) and/or an <em>AAAA</em> (for IPv6) record exists pointing to the same IP address.</p><br>
+          <p>Essentially, a reverse DNS lookup on your email servers IP address/es should return a domain to which an <em>A</em> (for IPv4) and/or an <em>AAAA</em> (for IPv6) record exists pointing to the same IP address/es.</p><br>
 
           <h4>Example (Simple)</h4>
 
-          <p>For example, in my configuration I send mail from <em>this</em> server (<em>45.76.112.111</em> and 2001:19f0:5801:2a1:5400:1ff:fe3d:aebd</em>).</p>
+          <p>For example, in my configuration, I send mail from <em>this</em> server (<em>45.76.112.111</em> and <em>2001:19f0:5801:2a1:5400:1ff:fe3d:aebd</em>).</p>
 
           <p>A reverse DNS lookup for IPv4 returns <em>aaronhorler.com</em>.</p>
 
@@ -112,21 +112,21 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <h3>SPF</h3>
 
-          <p>SPF (<a class="visible-link" href="https://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>) is a means to authorise the sending of an email. It is configured via DNS.</p><br>
+          <p>SPF (<a class="visible-link" href="https://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>) is a means to authorise the sending of an email from a server. It is configured via DNS.</p><br>
 
           <h4>1. Create an SPF record.</h4>
 
           <p>SPF is implemented via a TXT record.</p>
 
-          <p>The <em>name</em> for the record should apply to the root domain (this is usually achieved by entering <em>@</em> or no name, but differs per provider).</p>
+          <p>The <em>name</em> for the record should (although may not in advanced configurations) apply to the root domain (this is usually achieved by entering <em>@</em> or no name, but differs per provider).</p>
 
-          <p>For simple Gmail compliance, the <em>data</em> for the record can permit the IP address of a sending server.</p>
+          <p>For simple Gmail compliance, the <em>value</em> for the record can permit the IP address of a sending server.</p>
 
           <p>My SPF record is (simply) as follows.</p>
 
           <p><code>"v=spf1 ip6:2001:19f0:5801:2a1:5400:1ff:fe3d:aebd -all"</code></p>
 
-          <p>This record only authorises emails from the public IPv6 address of my server. You can specific an IPv4 address, and IPv6 address, or both. See all options <a class="visible-link" href="http://www.openspf.org/SPF_Record_Syntax">here</a>.</p>
+          <p>This record only authorises emails from the public IPv6 address of my server. You can specify an IPv4 address, an IPv6 address, or both. See all options <a class="visible-link" href="http://www.openspf.org/SPF_Record_Syntax">here</a>.</p>
 
           <p>It's important to note that <em>my</em> current email implementation is for outgoing mail to Gmail <strong>only</strong>. If you intend to send emails to services that may not support IPv6, you need to also include an IPv4 address in the record. You can ignore IPv6 entirely if you don't use it.</p><br>
 
@@ -162,7 +162,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <h4>3. Advertise your public key via a TXT record.</h4>
 
-          <p>Yuor public key is contained in <em>default.txt</em>.</p>
+          <p>Your public key is contained in <em>default.txt</em>.</p>
 
           <p><code>cat default.txt</code></p>
 
@@ -172,13 +172,13 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuS1HwxQNj43Nq5fzRmWlEtEf+fcFNpCi2VlW2xfg57o6bhte7yslgtPhn4lS4Gu4Edvdzke0TDQz4M3FJcTslvapDTdDSmOoviaSxlL6IkDtHOyFtJeq3zq0YF6oUJHhUwAEOtiEyjUJksf8BvmMNbewJ4KTHU1HGtIC6UT5bm/Tgy5WeJ+bVqv+oHrtOkq+tH2EZzr6VCx/Cc"
 "4xesbcy0D/+Ev1Qbmx1moDVKy9xqmuG3Z09yfQa3MXfkC3D7h0vaII3xjR+6WggA/cigh2I0nwBrd4WX/LiayM+8rdraMpQLez1JGIUwWplcUln6RWVptQgtx2X/cmkP7uq6+VDQIDAQAB" )  ; ----- DKIM key default for example.com</code></pre>
 
-          <p>This needs to be manipulated into a TXT record where the <em>name</em> is <code>default.domainkey</code>, and the <em>data</em> is a string consisting of the <code>v</code>, <code>h</code>, <code>k</code>, and <code>p</code> values. Note that the value for <code>p</code> continues onto a second line.</p>
+          <p>This needs to be manipulated into a TXT record where the <em>name</em> is <code>default.domainkey</code>, and the <em>value</em> is a string consisting of the <code>v</code>, <code>h</code>, <code>k</code>, and <code>p</code> values. Note that the value for <code>p</code> continues onto a second line.</p>
 
           <p>The string data for the example TXT record from above would be as follows.</p>
 
           <p><code>"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuS1HwxQNj43Nq5fzRmWlEtEf+fcFNpCi2VlW2xfg57o6bhte7yslgtPhn4lS4Gu4Edvdzke0TDQz4M3FJcTslvapDTdDSmOoviaSxlL6IkDtHOyFtJeq3zq0YF6oUJHhUwAEOtiEyjUJksf8BvmMNbewJ4KTHU1HGtIC6UT5bm/Tgy5WeJ+bVqv+oHrtOkq+tH2EZzr6VCx/Cc4xesbcy0D/+Ev1Qbmx1moDVKy9xqmuG3Z09yfQa3MXfkC3D7h0vaII3xjR+6WggA/cigh2I0nwBrd4WX/LiayM+8rdraMpQLez1JGIUwWplcUln6RWVptQgtx2X/cmkP7uq6+VDQIDAQAB"</code></p><br>
 
-          <h4>4. Move your private key.</h4>
+          <h4>4. Move your private key (and set permissions).</h4>
 
           <p><code>sudo mv default.private /etc/dkimkeys/</code></p>
 
@@ -196,7 +196,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 KeyFile /etc/dkimkeys/default.private
 Selector default</code></pre>
 
-          <p>Then, configure OpenDKIM to listen on a unused port on localhost.</p>
+          <p>Then, configure OpenDKIM to listen on an unused port on the loopback address.</p>
 
           <p><code>sudo nano /etc/default/opendkim</code></p>
 
@@ -276,11 +276,11 @@ Selector default</code></pre>
 
           <p>DMARC has many <a class="visible-link" href="https://dmarc.org/overview/">options</a>.</p>
 
-          <p>My (strict) DMARC record is as follows.</p>
+          <p>My (strict) DMARC record value is as follows.</p>
 
           <p><code>"v=DMARC1; p=reject; adkim=s; aspf=s"</code></p>
 
-          <p>This policy instructs clients (Gmail only, in my case) to reject emails that do not strictly comply with my SPF and DKIM rules.</p>
+          <p>This policy instructs clients (Gmail only, in my case) to reject emails that do not strictly comply with my SPF and DKIM records.</p>
 
           <p>Implement this carefully. Note that Gmail <a class="visible-link" href="https://support.google.com/a/answer/2466563?hl=en">recommends</a> its G Suit customers implement DMARC slowly by utilising reports and subjecting only a percentage of messages to filtering.</p><br>
 

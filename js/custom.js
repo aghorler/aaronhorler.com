@@ -1,5 +1,3 @@
-var pluto = document.getElementById("profile");
-
 function spinPluto(){
   if(pluto.style.transform == "" || pluto.style.transform == "rotateZ(-360deg)"){
     for(let i = 0; i < 361; i++){
@@ -94,6 +92,19 @@ function encryptMessage(){
   }
 }
 
-pluto.addEventListener("click", spinPluto);
-document.addEventListener('DOMContentLoaded', spinPluto);
-document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);
+function loadDisqus(){
+  var script = document.createElement("script");
+  script.src = "../js/disqus.min.js";
+  document.getElementById("content").appendChild(script);
+}
+
+if(document.getElementById("profile") !== null){
+  var pluto = document.getElementById("profile");
+
+  pluto.addEventListener("click", spinPluto);
+  document.addEventListener('DOMContentLoaded', spinPluto);
+  document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);
+}
+else if(document.getElementById("disqus_load") !== null){
+  document.getElementById("disqus_load").addEventListener("click", loadDisqus);
+}

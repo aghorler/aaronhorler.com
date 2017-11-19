@@ -71,7 +71,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <br><h3>How to patch an outdated consumer router against KRACK.</h3>
           <hr class="star-primary">
         </div>
-        <div class="col-lg-12">
+        <div id="content" class="col-lg-12">
           <p class="text-muted"><strong>Last updated:</strong> October, 2017.</p>
 
           <p>If you're using a consumer router, it's probably vulnerable to <a class="visible-link" href="https://en.wikipedia.org/wiki/KRACK">KRACK</a>.</p>
@@ -141,6 +141,15 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <p>When configuring WiFi in LEDE, use <em>WPA2-PSK</em> as the Encryption algorithm and <em>Force CCMP (AES)</em> as the Cipher.</p>
 
           <p>LEDE, since version <em>17.01.4</em>, provides a GUI option to complicate attacks like KRACK - this can optionally be enabled.</p>
+
+          <hr><br>
+
+          <!-- Button to initiate the loading of Disqus -->
+          <p>
+            <button id="disqus_load" class="btn btn-primary">Show comments</button>
+          </p>
+
+          <div id="disqus_thread">Comments are provided by Disqus. To respect user privacy, Disqus is only loaded on user prompt. <br><br>I recommend <a class="visible-link" href="https://github.com/gorhill/uBlock">uBlock Origin</a> to protect against Disqus tracking and advertising.</div>
         </div>
       </div>
     </section>
@@ -208,6 +217,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     <!-- Custom scripts for this template -->
     <script src="../js/freelancer.min.js"></script>
+    <script src="../js/custom.min.js"></script>
 
 </body>
 

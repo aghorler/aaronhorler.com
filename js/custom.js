@@ -96,6 +96,8 @@ function loadDisqus(){
   var script = document.createElement("script");
   script.src = "../js/disqus.min.js";
   document.getElementById("content").appendChild(script);
+
+  document.getElementById("disqus_load").removeEventListener("click", loadDisqus);
 }
 
 if(document.getElementById("profile") !== null){

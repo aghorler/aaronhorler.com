@@ -72,7 +72,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <hr class="star-primary">
         </div>
         <div id="content" class="col-lg-12">
-          <p class="text-muted"><strong>Last updated:</strong> November 22, 2017.</p>
+          <p class="text-muted"><strong>Last updated:</strong> November 23, 2017.</p>
 
           <p>I've used OpenVPN for many years, and DNS leaks have been a persistent issue across OpenVPN versions and operating systems - that I've resolved using various methods in each case.</p>
 
@@ -149,9 +149,13 @@ down-pre</code></pre>
 
           <p><code>sudo openvpn --config example.ovpn</code></p>
 
+          <p>Use <code>Ctrl-C</code> (<code>^C</code>) to disconnect.</p>
+
           <p>If you're concerned about not being notified of disconnects, I advise you use <a class="visible-link" href="https://github.com/aghorler/update-systemd-resolved">my fork of update-systemd-resolved</a> that implements a simple UFW killswitch.</p>
 
           <p>You should no longer be experiencing DNS leaks! <a class="visible-link" href="https://dnsleaktest.com/">Test here</a>.</p>
+
+          <p><strong>Note:</strong> This guide prevents <em>DNS</em> leaks only. <em>WebRTC</em> and <em>IPv6</em> leaks are not <em>DNS</em> leaks, and they require separate solutions. I've developed a <a class="visible-link" href="https://chrome.google.com/webstore/detail/webrtc-leak-prevent/eiadekoaikejlgdbkbdfeijglgfdalml">Chromium extension</a> to prevent WebRTC leaks (alternatively, <a class="visible-link" href="https://github.com/gorhill/uBlock">uBlock Origin</a> can be configured to do this in both Chromium and Firefox). IPv6 leaks can be avoided by tunneling IPv6 through OpenVPN, or disabling IPv6 client-side.</p>
 
           <hr><br>
 

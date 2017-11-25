@@ -75,15 +75,15 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <hr class="star-dark mb-5">
         </div>
         <div id="content" class="col-lg-12">
-          <p class="text-muted"><strong>Last updated:</strong> July, 2017.</p>
+          <p class="text-muted"><strong>Last updated:</strong> November 25, 2017.</p>
 
           <p>You can somewhat easily receive JSON-formatted security header violation reports by email using PHP.</p><br>
 
-          <h4 class="text-uppercase text-secondary mb-2">1. Create a new host just for recieving reports.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Create a new virtual host solely for recieving reports.</h4>
 
           <p>Create a subdomain of your current domain, or use an entirely different domain for report receiving.</p>
 
-          <p>Using Apache, this is a decent configuration using a subdomain. It's configured as if you are using Let's Encrypt with OCSP stapling. Ordinary security headers can be set, but you must not pin.</p>
+          <p>Using Apache, this is a decent configuration using a subdomain. It's configured as if you are using Let's Encrypt with OCSP stapling. Ordinary security headers can be set, but you must not pin certificates or enable reporting.</p>
 
           <pre><code class="code-scroll">&lt;IfModule mod_ssl.c&gt;
 &lt;VirtualHost *:443&gt;
@@ -107,7 +107,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     # Secuirty headers.
     # Enable restrictive CSP. 
-    Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';"
+    Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none'; sandbox; upgrade-insecure-requests"
 
     # Enable HSTS
     Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
@@ -188,12 +188,13 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     }
     else{
         http_response_code(405);
+        header("Allow: POST");
         print "Method not allowed.";
         exit();
     }
 ?&gt;</code></pre>
 
-          <p>This requires you have PHP installed and setup, and a mailing program like Sendmail. <a class="visible-link" href="/articles/sendmail.html">See here</a> for instructions on configuring Sendmail to use TLS.</p>
+          <p>This requires you have PHP installed and setup, and a mail program like Sendmail. <a class="visible-link" href="/articles/sendmail.html">See here</a> for instructions on configuring Sendmail to use TLS with Let's Encrypt.</p>
 
           <p>Finally, set the correct permisions and (optionally) owner.</p>
 
@@ -206,6 +207,8 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <p>The report-uri parameter is supported by <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning">Public-Key-Pins</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins-Report-Only">Public-Key-Pins-Report-Only</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content-Security-Policy</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only">Content-Security-Policy-Report-Only</a></em>, <em><a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">X-XSS-Protection</a></em>, and <em><a class="visible-link" href="https://scotthelme.co.uk/a-new-security-header-expect-ct/">Expect-CT</a></em>.</p><br>
 
           <h5 class="text-uppercase text-secondary mb-2">Public-Key-Pins-Report-Only</h5>
+
+          <p><strong>Update:</strong> This security header (and <em>Public-Key-Pins</em>) is <a class="visible-link" href="https://groups.google.com/a/chromium.org/forum/#!topic/blink-dev/he9tr7p3rZ8">being deprecated</a>.</p><br>
 
           <p>Public-Key-Pins can be dangerous, so I'll demonstrate Public-Key-Pins-Report-Only instead.</p>
 

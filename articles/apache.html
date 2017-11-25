@@ -26,37 +26,40 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
+    <!-- Plugin CSS -->
+    <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+
     <!-- Custom styles for this template -->
-    <link href="../css/freelancer.min.css" rel="stylesheet">
+    <link href="../css/freelancer.css" rel="stylesheet">
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
     <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#102a45">
+    <meta name="theme-color" content="#1e1e1e">
   </head>
 
   <body id="page-top">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../#portfolio">Articles</a>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#portfolio">Articles</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../#about">About</a>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#about">About</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../#contact">Contact</a>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#contact">Contact</a>
             </li>
           </ul>
         </div>
@@ -68,8 +71,8 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <section>
       <div class="container">
         <div class="col-lg-12 text-center">
-          <br><h3>Apache and Let's Encrypt best practices for security.</h3>
-          <hr class="star-primary">
+          <br><h3 class="text-center text-uppercase text-secondary mb-0">Apache and Let's Encrypt best practices for security.</h4>
+          <hr class="star-dark mb-5">
         </div>
         <div id="content" class="col-lg-12">
           <p class="text-muted"><strong>Last updated:</strong> October, 2017.</p>
@@ -78,11 +81,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <hr>
 
-          <h3>Configuring Apache</h3>
+          <h3 class="text-uppercase text-secondary mb-2">Configuring Apache</h3>
 
-          <p>This assumes you have installed Apache via apt.</p>
+          <p>This assumes you have installed Apache via apt.</p><br>
 
-          <h4>1. Disable broadcasting of the Apache version</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Disable broadcasting of the Apache version</h4>
 
           <p><code>sudo nano /etc/apache2/apache2.conf</code></p>
 
@@ -94,13 +97,13 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>This will prevent Apache from sending its version in the response header and on error pages.</p><br>
 
-          <h4>2. Disable the ETag response header</h4>
+          <h4 class="text-uppercase text-secondary mb-2">2. Disable the ETag response header</h4>
 
           <p>Append the option below to the same configuration file as in point 1.</p>
 
           <p><code>FileETag None</code></p><br>
 
-          <h4>4. Set the OCSP stapling cache</h4>
+          <h4 class="text-uppercase text-secondary mb-2">4. Set the OCSP stapling cache</h4>
 
           <p>You will configure OCSP stapling later.</p>
 
@@ -108,7 +111,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p><code>SSLStaplingCache shmcb:/var/run/apache2/stapling_cache(128000)</code></p><br>
 
-          <h4>3. Enable the HTTP/2 module (optional)</h4>
+          <h4 class="text-uppercase text-secondary mb-2">3. Enable the HTTP/2 module (optional)</h4>
 
           <p><code>sudo a2enmod http2</code></p>
 
@@ -146,21 +149,21 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <hr>
 
-          <h3>Running Let's Encrypt</h3>
+          <h3 class="text-uppercase text-secondary mb-2">Running Let's Encrypt</h3>
 
-          <p>This requires you've setup at least one Apache VirtualHost. See <a class="visible-link" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04" title="I'm not affiliated with Digital Ocean."> this</a> guide.</p>
+          <p>This requires you've setup at least one Apache VirtualHost. See <a class="visible-link" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04" title="I'm not affiliated with Digital Ocean."> this</a> guide.</p><br>
 
-          <h4>1. Install Let's Encrypt</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Install Let's Encrypt</h4>
 
           <p><code>sudo apt install letsencrypt</code></p><br>
 
-          <h4>2. Run Let's Encrypt</h4>
+          <h4 class="text-uppercase text-secondary mb-2">2. Run Let's Encrypt</h4>
 
           <p><code>sudo letsencrypt --redirect --must-staple --rsa-key-size 4096 -d example.com -d www.example.com</code></p>
 
           <p>This command will request a certificate with the OCSP Must-Staple flag set, and produce an RSA key with a large keysize of 4096 bits.</p><br>
 
-          <h4>3. Use an ECDSA private key instead (very optional)</h4>
+          <h4 class="text-uppercase text-secondary mb-2">3. Use an ECDSA private key instead (very optional)</h4>
 
           <p>ECDSA is a faster and more secure alternative to RSA.</p>
 
@@ -208,11 +211,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <hr>
 
-          <h3>Configuring Apache VirtualHosts</h3>
+          <h3 class="text-uppercase text-secondary mb-2">Configuring Apache VirtualHosts</h3>
 
-          <p>This requires you've run Let's Encrypt.</p>
+          <p>This requires you've run Let's Encrypt.</p><br>
 
-          <h4>1. Replace the Let's Encrypt-generated configuration file.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Replace the Let's Encrypt-generated configuration file.</h4>
 
           <p>Let's Encrypt generates a configuration file for your VirtualHost. We're going to heavily change it.</p>
 
@@ -298,45 +301,45 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>The <em>modern</em> recommendations will prevent access from certain older clients by, for example, disabling every SSL/TLS protocol except TLS 1.2.</p><br>
 
-          <h4>3. Configure and set security headers in my template.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">3. Configure and set security headers in my template.</h4>
           
-          <h5>HTTP Strict Transport Security (HSTS)</h5>
+          <h5 class="text-uppercase text-secondary mb-2">HTTP Strict Transport Security (HSTS)</h5>
 
           <p><code>Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"</code></p>
 
           <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a class="visible-link" href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy as part of future browser releases.</p>
 
-          <h5>Content Security Policy (CSP)</h5>
+          <h5 class="text-uppercase text-secondary mb-2">Content Security Policy (CSP)</h5>
 
           <p><code>Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';</code></p>
 
           <p>Instruct browsers what resources are allowed. Refer to <a class="visible-link" href="https://content-security-policy.com/">this</a> for all options.</p>
 
-          <h5>Referrer-Policy</h5>
+          <h5 class="text-uppercase text-secondary mb-2">Referrer-Policy</h5>
 
           <p><code>Header always set Referrer-Policy "no-referrer"</code></p>
 
           <p>Instruct browsers not to send the Referer header.</p>
 
-          <h5>X-Frame-Options</h5>
+          <h5 class="text-uppercase text-secondary mb-2">X-Frame-Options</h5>
 
           <p><code>Header always set X-Frame-Options "DENY"</code></p>
 
           <p>Instruct browsers not to render your domain in frames, iframes, or objects.</p>
 
-          <h5>X-XSS-Protection</h5>
+          <h5 class="text-uppercase text-secondary mb-2">X-XSS-Protection</h5>
 
           <p><code>Header always set X-XSS-Protection "1; mode=block"</code></p>
 
           <p>Enable XSS filtering, and block rendering of the page if an attack is detected.</p>
 
-          <h5>X-Content-Type-Options</h5>
+          <h5 class="text-uppercase text-secondary mb-2">X-Content-Type-Options</h5>
 
           <p><code>Header always set X-Content-Type-Options "nosniff"</code></p>
 
-          <p>Instruct browsers not to MIME sniff.</p>
+          <p>Instruct browsers not to MIME sniff.</p><br>
 
-          <h4>4. Create your new VirtualHost file, and reboot Apache.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">4. Create your new VirtualHost file, and reboot Apache.</h4>
 
           <p>Once you've modified my template, create a new file with the same name and paste your configuration.</p>
 
@@ -346,11 +349,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <hr>
 
-          <h3>Securing PHP slightly (optional)</h3>
+          <h3 class="text-uppercase text-secondary mb-2">Securing PHP slightly (optional)</h3>
 
-          <p>This is only required if you have PHP installed, and assumes PHP 7.</p>
+          <p>This is only required if you have PHP installed, and assumes PHP 7.</p><br>
 
-          <h4>1. Create a user.ini configuration file.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Create a user.ini configuration file.</h4>
 
           <p><code>sudo nano /etc/php/7.0/apache2/conf.d/user.ini</code></p>
 
@@ -390,55 +393,50 @@ file_uploads = Off
     </section>
 
     <!-- Footer -->
-    <footer class="text-center">
-      <div class="footer-above">
-        <div class="container">
-          <div class="row">
-            <div class="footer-col col-md-4">
-              <h3>Location</h3>
-              <p><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
-            </div>
-            <div class="footer-col col-md-4">
-              <h3>Around the Web</h3>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
-                    <i class="fa fa-fw fa-github"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
-                    <i class="fa fa-fw fa-linkedin"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
-                    <i class="fa fa-fw fa-facebook"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="footer-col col-md-4">
-              <h3>About Me</h3>
-              <p>I am an Information Technology student.</p>
-            </div>
+    <footer class="footer text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Location</h4>
+            <p class="lead mb-2"><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.</p>
           </div>
-        </div>
-      </div>
-      <div class="footer-below">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
-            </div>
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Around the Web</h4>
+            <ul class="list-inline mb-2">
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://github.com/aghorler">
+                  <i class="fa fa-fw fa-github"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://linkedin.com/in/aghorler">
+                  <i class="fa fa-fw fa-linkedin"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://www.facebook.com/aghorler">
+                  <i class="fa fa-fw fa-facebook"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h4 class="text-uppercase mb-4">About Me</h4>
+            <p class="lead mb-2">I am an Information Technology student.</p>
           </div>
         </div>
       </div>
     </footer>
 
+    <div class="copyright py-4 text-center text-white">
+      <div class="container">
+        <small>Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.</small>
+      </div>
+    </div>
+
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top d-lg-none">
-      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+    <div class="scroll-to-top d-lg-none position-fixed ">
+      <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
         <i class="fa fa-chevron-up"></i>
       </a>
     </div>
@@ -449,6 +447,7 @@ file_uploads = Off
 
     <!-- Plugin JavaScript -->
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Custom scripts for this template -->
     <script src="../js/freelancer.min.js"></script>

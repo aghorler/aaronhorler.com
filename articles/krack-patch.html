@@ -26,37 +26,40 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
+    <!-- Plugin CSS -->
+    <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+
     <!-- Custom styles for this template -->
-    <link href="../css/freelancer.min.css" rel="stylesheet">
+    <link href="../css/freelancer.css" rel="stylesheet">
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
     <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#102a45">
+    <meta name="theme-color" content="#1e1e1e">
   </head>
 
   <body id="page-top">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../#portfolio">Articles</a>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#portfolio">Articles</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../#about">About</a>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#about">About</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../#contact">Contact</a>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#contact">Contact</a>
             </li>
           </ul>
         </div>
@@ -68,8 +71,8 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <section>
       <div class="container">
         <div class="col-lg-12 text-center">
-          <br><h3>How to patch an outdated consumer router against KRACK.</h3>
-          <hr class="star-primary">
+          <br><h3 class="text-center text-uppercase text-secondary mb-0">How to patch an outdated consumer router against KRACK.</h3>
+          <hr class="star-dark mb-5">
         </div>
         <div id="content" class="col-lg-12">
           <p class="text-muted"><strong>Last updated:</strong> October, 2017.</p>
@@ -80,7 +83,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <hr>
 
-          <h4>1. Install LEDE.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Install LEDE.</h4>
 
           <p>Not all routers are supported by LEDE. Search for your router <a class="visible-link" href="https://lede-project.org/toh/start">here</a> to verify support.</p>
 
@@ -94,13 +97,13 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>The default username is <em>root</em>, and the default password is blank (as in an empty string). Set a password.</p><br>
 
-          <h4>2. Verifying LEDE is not vulnerable to KRACK.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">2. Verifying LEDE is not vulnerable to KRACK.</h4>
 
           <p>LEDE itself is patched against KRACK since version <em>17.01.4</em>. If you flashed a verison equal to, or newer than, this version - you are secure.</p>
 
-          <p>You can manually verify (and upgrade) wpad via <em>opkg</em>.</p>
+          <p>You can manually verify (and upgrade) wpad via <em>opkg</em>.</p><br>
 
-          <h5>SSH into the router</h5>
+          <h5 class="text-uppercase text-secondary mb-2">SSH into the router</h5>
 
           <p><code>ssh root@192.168.1.1</code></p>
 
@@ -136,7 +139,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p><code>reboot</code></p><br>
 
-          <h4>3. You are done.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">3. You are done.</h4>
 
           <p>When configuring WiFi in LEDE, use <em>WPA2-PSK</em> as the Encryption algorithm and <em>Force CCMP (AES)</em> as the Cipher.</p>
 
@@ -155,55 +158,50 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     </section>
 
     <!-- Footer -->
-    <footer class="text-center">
-      <div class="footer-above">
-        <div class="container">
-          <div class="row">
-            <div class="footer-col col-md-4">
-              <h3>Location</h3>
-              <p><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.<p>
-            </div>
-            <div class="footer-col col-md-4">
-              <h3>Around the Web</h3>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <a class="btn-social btn-outline" href="https://github.com/aghorler">
-                    <i class="fa fa-fw fa-github"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="btn-social btn-outline" href="https://linkedin.com/in/aghorler">
-                    <i class="fa fa-fw fa-linkedin"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a class="btn-social btn-outline" href="https://www.facebook.com/aghorler">
-                    <i class="fa fa-fw fa-facebook"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="footer-col col-md-4">
-              <h3>About Me</h3>
-              <p>I am an Information Technology student.</p>
-            </div>
+    <footer class="footer text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Location</h4>
+            <p class="lead mb-2"><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.</p>
           </div>
-        </div>
-      </div>
-      <div class="footer-below">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.
-            </div>
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Around the Web</h4>
+            <ul class="list-inline mb-2">
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://github.com/aghorler">
+                  <i class="fa fa-fw fa-github"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://linkedin.com/in/aghorler">
+                  <i class="fa fa-fw fa-linkedin"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://www.facebook.com/aghorler">
+                  <i class="fa fa-fw fa-facebook"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h4 class="text-uppercase mb-4">About Me</h4>
+            <p class="lead mb-2">I am an Information Technology student.</p>
           </div>
         </div>
       </div>
     </footer>
 
+    <div class="copyright py-4 text-center text-white">
+      <div class="container">
+        <small>Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.</small>
+      </div>
+    </div>
+
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top d-lg-none">
-      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+    <div class="scroll-to-top d-lg-none position-fixed ">
+      <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
         <i class="fa fa-chevron-up"></i>
       </a>
     </div>
@@ -214,6 +212,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     <!-- Plugin JavaScript -->
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Custom scripts for this template -->
     <script src="../js/freelancer.min.js"></script>

@@ -36,7 +36,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#1e1e1e">
   </head>
 
@@ -81,7 +81,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>Consider also reading my article on <a class="visible-link" href="./sendmail-integrity-antispam-ubuntu.html">email integrity and anti-spam/anti-spoofing with Sendmail</a>.</p><br>
 
-          <h4>1. Locate your Let's Encrypt directory.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">1. Locate your Let's Encrypt directory.</h4>
 
           <p><code>sudo ls /etc/letsencrypt/live/example.com/</code></p>
 
@@ -91,7 +91,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p id="article-note">Note: you need to have run letsencrypt first.</p><br>
 
-          <h4>2. Modify sendmail.mc</h4>
+          <h4 class="text-uppercase text-secondary mb-2">2. Modify sendmail.mc</h4>
 
           <p><code>sudo nano /etc/mail/sendmail.mc</code></p>
 
@@ -114,7 +114,7 @@ define(`confSERVER_KEY', `/etc/letsencrypt/ecdsa/example.com/privkey.pem')dnl
 dnl#
 </code></pre><br>
 
-          <h4>2. Reconfigure and restart Sendmail</h4>
+          <h4 class="text-uppercase text-secondary mb-2">2. Reconfigure and restart Sendmail</h4>
 
           <p><code>sudo su</code></p>
 
@@ -143,11 +143,11 @@ dnl#
         <div class="row">
           <div class="col-md-4 mb-5 mb-lg-0">
             <h4 class="text-uppercase mb-4">Location</h4>
-            <p class="lead mb-0"><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.</p>
+            <p class="lead mb-2"><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.</p>
           </div>
           <div class="col-md-4 mb-5 mb-lg-0">
             <h4 class="text-uppercase mb-4">Around the Web</h4>
-            <ul class="list-inline mb-0">
+            <ul class="list-inline mb-2">
               <li class="list-inline-item">
                 <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://github.com/aghorler">
                   <i class="fa fa-fw fa-github"></i>
@@ -167,7 +167,7 @@ dnl#
           </div>
           <div class="col-md-4">
             <h4 class="text-uppercase mb-4">About Me</h4>
-            <p class="lead mb-0">I am an Information Technology student.</p>
+            <p class="lead mb-2">I am an Information Technology student.</p>
           </div>
         </div>
       </div>

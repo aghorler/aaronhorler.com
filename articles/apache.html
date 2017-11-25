@@ -75,9 +75,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <hr class="star-dark mb-5">
         </div>
         <div id="content" class="col-lg-12">
-          <p class="text-muted"><strong>Last updated:</strong> October, 2017.</p>
+          <p class="text-muted"><strong>Last updated:</strong> November 25, 2017.</p>
 
-          <p>This is a simple multi-part guide for configuring Apache and Let's Encrypt with optimal security settings under Ubuntu 16.04+.</p><br>
+          <p>This is a simple multi-part guide for configuring Apache and Let's Encrypt with optimal security settings under Ubuntu 16.04+.</p>
+
+          <small>Example resources - <a class="visible-link" href="https://github.com/aghorler/aaronhorler.com-server/blob/master/etc/apache2/apache2.conf">apache2.conf</a>, <a class="visible-link" href="https://github.com/aghorler/aaronhorler.com-server/blob/master/etc/apache2/sites-available/aaronhorler.com.conf">aaronhorler.com.conf</a>, and <a class="visible-link" href="https://github.com/aghorler/aaronhorler.com-server/blob/master/etc/apache2/sites-available/aaronhorler.com-le-ssl.conf">aaronhorler.com-le-ssl.conf</a>.</small><br>
 
           <hr>
 
@@ -102,6 +104,21 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
           <p>Append the option below to the same configuration file as in point 1.</p>
 
           <p><code>FileETag None</code></p><br>
+
+          <h4 class="text-uppercase text-secondary mb-2">3. Disable uneeded HTTP methods.</h4>
+
+          <p>Append the option below to the same configuration file as in point 1.</p>
+
+          <p><code>TraceEnable off</code></p>
+
+          <p>Also append this to every <a class="visible-link" href="https://httpd.apache.org/docs/2.4/mod/core.html#directory">&lt;Directory&gt;</a> directive.</p>
+
+          <pre><code class="code-scroll">&lt;LimitExcept GET POST HEAD&gt;
+    deny from all
+&lt;/LimitExcept&gt;
+</code></pre>
+
+          <p>This will disable all HTTP methods expect <a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET">GET</a>, <a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST">POST</a>, and <a class="visible-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD">HEAD</a>.</p><br>
 
           <h4 class="text-uppercase text-secondary mb-2">4. Set the OCSP stapling cache</h4>
 
@@ -155,6 +172,8 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <h4 class="text-uppercase text-secondary mb-2">1. Install Let's Encrypt</h4>
 
+          <p><code>sudo apt update</code></p>
+
           <p><code>sudo apt install letsencrypt</code></p><br>
 
           <h4 class="text-uppercase text-secondary mb-2">2. Run Let's Encrypt</h4>
@@ -165,7 +184,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <h4 class="text-uppercase text-secondary mb-2">3. Use an ECDSA private key instead (very optional)</h4>
 
-          <p>ECDSA is a faster and more secure alternative to RSA.</p>
+          <p>ECDSA is a <a class="visible-link" href="https://scotthelme.co.uk/ecdsa-certificates/"> faster and more secure</a> alternative to RSA.</p>
 
           <p>I recommend you test Let's Encrypt normally first.</p>
 
@@ -219,7 +238,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>Let's Encrypt generates a configuration file for your VirtualHost. We're going to heavily change it.</p>
 
-          <p>First, remove the current file.</p>
+          <p>First, remove the generated file.</p>
 
           <p><code>sudo rm -f /etc/sites-available/example.com-le-ssl.conf</code></p>
 
@@ -249,7 +268,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     # Write your CSP. 
     # This will break your site. You'll need to use trial and error. 
     # Do not use 'unsafe-inline' or 'unsafe-eval', and no not change default-src to anything but 'none'.
-    Header always set Content-Security-Policy "default-src 'none'; child-src 'none'; connect-src 'none'; font-src 'none'; frame-ancestors 'none'; img-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; sandbox; script-src 'none'; style-src 'none';"
+    Header always set Content-Security-Policy "default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; frame-ancestors 'none'; frame-src 'none';  img-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; sandbox; script-src 'none'; style-src 'none'; upgrade-insecure-requests; worker-src 'none'"
 
     # Enable HSTS
     Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
@@ -301,37 +320,39 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>The <em>modern</em> recommendations will prevent access from certain older clients by, for example, disabling every SSL/TLS protocol except TLS 1.2.</p><br>
 
-          <h4 class="text-uppercase text-secondary mb-2">3. Configure and set security headers in my template.</h4>
+          <h4 class="text-uppercase text-secondary mb-2">3. Configure and set security headers in my template.</h4><br>
           
           <h5 class="text-uppercase text-secondary mb-2">HTTP Strict Transport Security (HSTS)</h5>
 
           <p><code>Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"</code></p>
 
-          <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a class="visible-link" href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy as part of future browser releases.</p>
+          <p>Instruct browsers to remember for two years (63072000 seconds) to force HTTPS-only connections on your domain, and every subdomain. Optionally you can include the <code>preload</code> option and add your domain to <a class="visible-link" href="https://hstspreload.org/">this list</a> to enforce your domain's HSTS policy permanently as part of future browser releases.</p>
+
+          <p><strong class="text-danger">Warning:</strong> By enabling HSTS, you are comitting to HTTPS (effectively) permanently.</p><br>
 
           <h5 class="text-uppercase text-secondary mb-2">Content Security Policy (CSP)</h5>
 
-          <p><code>Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';</code></p>
+          <p><code>Header always set Content-Security-Policy "default-src 'none'; ...</code></p>
 
-          <p>Instruct browsers what resources are allowed. Refer to <a class="visible-link" href="https://content-security-policy.com/">this</a> for all options.</p>
+          <p>Instruct browsers what resources are allowed. Refer to <a class="visible-link" href="https://content-security-policy.com/">this</a> for all options.</p><br>
 
           <h5 class="text-uppercase text-secondary mb-2">Referrer-Policy</h5>
 
           <p><code>Header always set Referrer-Policy "no-referrer"</code></p>
 
-          <p>Instruct browsers not to send the Referer header.</p>
+          <p>Instruct browsers not to send the Referer header.</p><br>
 
           <h5 class="text-uppercase text-secondary mb-2">X-Frame-Options</h5>
 
           <p><code>Header always set X-Frame-Options "DENY"</code></p>
 
-          <p>Instruct browsers not to render your domain in frames, iframes, or objects.</p>
+          <p>Instruct browsers not to render your domain in frames, iframes, or objects.</p><br>
 
           <h5 class="text-uppercase text-secondary mb-2">X-XSS-Protection</h5>
 
           <p><code>Header always set X-XSS-Protection "1; mode=block"</code></p>
 
-          <p>Enable XSS filtering, and block rendering of the page if an attack is detected.</p>
+          <p>Enable XSS filtering, and block rendering of the page if an attack is detected.</p><br>
 
           <h5 class="text-uppercase text-secondary mb-2">X-Content-Type-Options</h5>
 
@@ -351,11 +372,13 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <h3 class="text-uppercase text-secondary mb-2">Securing PHP slightly (optional)</h3>
 
-          <p>This is only required if you have PHP installed, and assumes PHP 7.</p><br>
+          <p>This is only required if you have PHP installed, and assumes PHP 7.0+.</p><br>
 
           <h4 class="text-uppercase text-secondary mb-2">1. Create a user.ini configuration file.</h4>
 
           <p><code>sudo nano /etc/php/7.0/apache2/conf.d/user.ini</code></p>
+
+          <p><strong>Note: </strong>The location of the <em>conf.d</em> directory may differ depending on the exact version of PHP.</p>
 
           <pre><code class="code-scroll"># Cookie security.
 session.cookie_httponly = 1

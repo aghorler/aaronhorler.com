@@ -200,7 +200,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p>And a Certificate Signing Request (CSR).</p>
 
-          <pre><code class="code-scroll">openssl req -new -sha256 -key privkey.pem -subj "/C=AU/ST=VIC/O=RMIT/CN=example.com" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:example.com,DNS:www.example.com\n1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05")) -out example.com.csr</code></pre>
+          <pre><code class="code-scroll">openssl req -new -sha512 -key privkey.pem -subj "/C=AU/ST=VIC/O=RMIT/CN=example.com" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:example.com,DNS:www.example.com\n1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05")) -out example.com.csr</code></pre>
 
           <p>Replace every instance of <em>example.com</em> with your domain.</p>
 
@@ -226,7 +226,11 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
           <p><code>sudo chmod -R 700 /etc/letsencrypt/ecdsa/</code></p>
 
-          <p><code>sudo chmod 600 /etc/letsencrypt/ecdsa/*/*</code></p><br>
+          <p><code>sudo chmod 600 /etc/letsencrypt/ecdsa/*/*</code></p>
+
+          <p>And start Apache.</p>
+
+          <p><code>sudo service apache2 start</code></p><br>
 
           <hr>
 

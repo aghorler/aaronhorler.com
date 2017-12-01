@@ -49,6 +49,10 @@
     <changefreq>yearly</changefreq>
   </url>
   <url>
+    <loc>https://aaronhorler.com/articles/firefox-privacy.html</loc>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
     <loc>https://aaronhorler.com/public.asc</loc>
     <changefreq>yearly</changefreq>
   </url>

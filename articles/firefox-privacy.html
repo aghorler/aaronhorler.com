@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Living is easy with eyes closed, misunderstanding all you see.
+It's getting hard to be someone, but it all works out; it doesn't matter much to me. -->
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Firefox (about:config) privacy modifications.">
+    <meta name="author" content="Aaron Horler">
+    <meta name="url" content="https://aaronhorler.com/articles/firefox-privacy.html">
+
+    <!-- Privacy -->
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+
+    <title>Firefox (about:config) privacy modifications. | Aaron Horler</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/freelancer.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#1e1e1e">
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="../">Aaron Horler</a>
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#portfolio">Articles</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#about">About</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <br>
+
+    <section>
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <br><h3 class="text-center text-uppercase text-secondary mb-0">Firefox (about:config) privacy modifications.</h3>
+          <hr class="star-dark mb-5">
+        </div>
+        <div id="content" class="col-lg-12">
+          <p class="text-muted"><strong>Last updated:</strong> December 1, 2017.</p>
+
+          <p>This guide is a simple alphabetised list of privacy-enhancing modifications that can be made to <strong>Firefox 57+</strong> via the <em>about:config</em> configuration editor, with minimal site breakage.</p>
+
+          <p>Optional modifications are in <span class="text-muted">grey</span>.</p>
+
+          <p>To access the editor, navigate to <code>about:config</code> via the address bar.</p><br>
+
+          <hr>
+
+          <h4 class="text-uppercase text-secondary mb-2">General modifications</h4><br>
+
+          <h5 class="text-secondary mb-2">app.shield.optoutstudies.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Opt-out of studies.</p><br>
+
+          <h5 class="text-secondary mb-2">beacon.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable hyperlink auditing.</p><br>
+
+          <h5 class="text-muted mb-2">browser.safebrowsing.downloads.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable Google Safe Browsing for downloads. Depending on user experience, this could pose a security risk.</p><br>
+
+          <h5 class="text-muted mb-2">browser.safebrowsing.downloads.remote.block_potentially_unwanted = <span class="text-danger">false</span></h5>
+
+          <p>Disable Google Safe Browsing for downloads. Depending on user experience, this could pose a security risk.</p><br>
+
+          <h5 class="text-muted mb-2">browser.safebrowsing.downloads.remote.block_uncommon = <span class="text-danger">false</span></h5>
+
+          <p>Disable Google Safe Browsing for downloads. Depending on user experience, this could pose a security risk.</p><br>
+
+          <h5 class="text-muted mb-2">browser.safebrowsing.downloads.remote.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable Google Safe Browsing for downloads. Depending on user experience, this could pose a security risk.</p><br>
+
+          <h5 class="text-muted mb-2">browser.safebrowsing.malware = <span class="text-danger">false</span></h5>
+
+          <p>Disable Google Safe Browsing malware protection. Depending on user experience, this could pose a security risk.</p><br>
+
+          <h5 class="text-muted mb-2">browser.safebrowsing.phishing.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable Google Safe Browsing phishing protection. Depending on user experience, this could pose a security risk.</p><br>
+
+          <h5 class="text-muted mb-2">browser.search.countryCode = <span class="text-info">US</span></h5>
+
+          <p>Change the search country code to a common country.</p><br>
+
+          <h5 class="text-muted mb-2">browser.search.region = <span class="text-info">US</span></h5>
+
+          <p>Change the search region to a common region.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.search.suggest.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable search suggestions in the search bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.send_pings = <span class="text-danger">false</span></h5>
+
+          <p>Disable the link <em>ping</em> attribute - which is commonly used for tracking link clicks.</p><br>
+
+          <h5 class="text-muted mb-2">browser.sessionstore.max_tabs_undo = <span class="text-info">0</span></h5>
+
+          <p>Disable the ability to re-open closed tabs.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.tabs.crashReporting.sendReport = <span class="text-danger">false</span></h5>
+
+          <p>Disable crash reporting.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.autoFill = <span class="text-danger">false</span></h5>
+
+          <p>Disable autofill in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.autoFill.typed = <span class="text-danger">false</span></h5>
+
+          <p>Disable autofill of previously typed queries in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.autocomplete.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable autocomplete in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.searchSuggestionsChoice = <span class="text-danger">false</span></h5>
+
+          <p>Disable remote search suggestions prompt in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.suggest.bookmark = <span class="text-danger">false</span></h5>
+
+          <p>Disable bookmark suggestions in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.suggest.history = <span class="text-danger">false</span></h5>
+
+          <p>Disable history suggestions in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.suggest.openpage = <span class="text-danger">false</span></h5>
+
+          <p>Disable open page suggestions in the address bar.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.urlbar.suggest.searches = <span class="text-danger">false</span></h5>
+
+          <p>Disable remote search suggestions in the address bar.</p><br>
+
+          <h5 class="text-muted mb-2">camera.control.face_detection.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable camera face detection. Realistically, this feature is not a privacy issue.</p><br>
+
+          <h5 class="text-secondary mb-2">datareporting.healthreport.uploadEnabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry data uploads.</p><br>
+
+          <h5 class="text-secondary mb-2">datareporting.policy.dataSubmissionEnabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry data submission.</p><br>
+
+          <h5 class="text-secondary mb-2">device.sensors.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable device sensors (motion, environmental, positon). Reduces uniqueness of browser fingerprint.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.battery.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the Battery Status API. Reduces uniqueness of browser fingerprint.</p><br>
+
+          <h5 class="text-muted mb-2">dom.event.clipboardevents.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable the ability for websites to detect clipboard events. This can break some web applications.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.event.contextmenu.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable the ability for websites to detect use of the right-click context menu.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.gamepad.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the Gamepad API. Reduces uniqueness of browser fingerprint.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.push.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable push notifications.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.vibrator.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the Vibration API. Reduces annoyances.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.vr.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the WebVR API. Reduces uniqueness of browser fingerprint.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.vr.oculus.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the WebVR API for the Oculus. Reduces uniqueness of browser fingerprint.</p><br>
+
+          <h5 class="text-secondary mb-2">dom.webnotifications.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the Notification API. Reduces annoyances.</p><br>
+
+          <h5 class="text-secondary mb-2">extensions.pocket.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable the Pocket addon.</p><br>
+
+          <h5 class="text-secondary mb-2">geo.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable Geolocation.</p><br>
+
+          <h5 class="text-muted mb-2">intl.accept_languages = <span class="text-info">en-US, en</span></h5>
+
+          <p>Set the <em>Accept-Language</em> request header to a common value. Reduces uniqueness of browser fingerprint. International users may not want to do this.</p><br>
+
+          <h5 class="text-secondary mb-2">media.navigator.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable media enumeration.</p><br>
+
+          <h5 class="text-secondary mb-2">media.peerconnection.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the WebRTC API. Reduces uniqueness of browser fingerprint. Prevents local IP address leaks.</p><br>
+
+          <h5 class="text-secondary mb-2">network.cookie.cookieBehavior = <span class="text-info">1</span></h5>
+
+          <p>Reject third-party cookies.</p><br>
+
+          <h5 class="text-muted mb-2">network.dns.disablePrefetch = <span class="text-success">true</span></h5>
+
+          <p>Disable IPv6 at the DNS level. Only enable this if you are concerned of IPv6 leaks behind VPNs and proxies.</p><br>
+
+          <h5 class="text-secondary mb-2">network.dns.disablePrefetch = <span class="text-sucess">true</span></h5>
+
+          <p>Disable DNS prefetching.</p><br>
+
+          <h5 class="text-muted mb-2">network.http.referer.XOriginPolicy = <span class="text-info">1</span></h5>
+
+          <p>Send the <em>Referer</em> request header only when the base domains for the two hosts match.</p><br>
+
+          <h5 class="text-muted mb-2">network.http.sendRefererHeader = <span class="text-info">1</span></h5>
+
+          <p>Send the <em>Referer</em> request header only when clicking on a link.</p><br>
+
+          <h5 class="text-secondary mb-2">network.http.speculative-parallel-limit = <span class="text-info">0</span></h5>
+
+          <p>Disable speculative pre-connections.</p><br>
+
+          <h5 class="text-secondary mb-2">network.predictor.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable network predictions.</p><br>
+
+          <h5 class="text-secondary mb-2">network.prefetch-next = <span class="text-danger">false</span></h5>
+
+          <p>Disable prefetching.</p><br>
+
+          <h5 class="text-muted mb-2">places.history.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable browsing history.</p><br>
+
+          <h5 class="text-secondary mb-2">privacy.clearOnShutdown.cache = <span class="text-success">true</span></h5>
+
+          <p>Clear browisng cache on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.clearOnShutdown.cookies = <span class="text-success">true</span></h5>
+
+          <p>Clear cookies on shutdown.</p><br>
+
+          <h5 class="text-secondary mb-2">privacy.clearOnShutdown.downloads = <span class="text-success">true</span></h5>
+
+          <p>Clear downloads on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.clearOnShutdown.formdata = <span class="text-success">true</span></h5>
+
+          <p>Clear form data on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.clearOnShutdown.history = <span class="text-success">true</span></h5>
+
+          <p>Clear browisng history on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.clearOnShutdown.sessions = <span class="text-success">true</span></h5>
+
+          <p>Clear active sessions on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.clearOnShutdown.siteSettings = <span class="text-success">true</span></h5>
+
+          <p>Clear site settings on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.donottrackheader.enabled = <span class="text-success">true</span></h5>
+
+          <p>Send the Do Not Track (DNT) request header.</p><br>
+
+          <h5 class="text-secondary mb-2">privacy.firstparty.isolate = <span class="text-success">true</span></h5>
+
+          <p>Isolate cookies, and other site data, to the domain.</p><br>
+
+          <h5 class="text-secondary mb-2">privacy.resistFingerprinting = <span class="text-success">true</span></h5>
+
+          <p>Resist browser fingerpinting.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.sanitize.sanitizeOnShutdown = <span class="text-success">true</span></h5>
+
+          <p>Clear <em>privacy.clearOnShutdown</em> items on shutdown.</p><br>
+
+          <h5 class="text-muted mb-2">privacy.sanitize.timeSpan = <span class="text-info">0</span></h5>
+
+          <p>Clear <em>privacy.clearOnShutdown</em> items on shutdown for all time.</p><br>
+
+          <h5 class="text-secondary mb-2">privacy.trackingprotection.enabled = <span class="text-success">true</span></h5>
+
+          <p>Enable tracking protection.</p><br>
+
+          <h5 class="text-secondary mb-2">privacy.trackingprotection.pbmode.enabled = <span class="text-success">true</span></h5>
+
+          <p>Enable tracking protection in private browsing mode.</p><br>
+
+          <h5 class="text-secondary mb-2">security.ssl.errorReporting.automatic = <span class="text-danger">false</span></h5>
+
+          <p>Disable automatic SSL/TLS error reporting.</p><br>
+
+          <h5 class="text-secondary mb-2">security.ssl.errorReporting.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable SSL/TLS error reporting.</p><br>
+
+          <h5 class="text-secondary mb-2">toolkit.telemetry.archive.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry archiving.</p><br>
+
+          <h5 class="text-secondary mb-2">toolkit.telemetry.bhrPing.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry pinging.</p><br>
+
+          <h5 class="text-secondary mb-2">toolkit.telemetry.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry.</p><br>
+
+          <h5 class="text-secondary mb-2">toolkit.telemetry.firstShutdownPing = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry shutdown ping.</p><br>
+
+          <h5 class="text-secondary mb-2">toolkit.telemetry.shutdownPingSender.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry shutdown ping.</p><br>
+
+          <h5 class="text-secondary mb-2">toolkit.telemetry.updatePing.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable telemetry update ping.</p><br>
+
+          <hr>
+
+          <h4 class="text-uppercase text-secondary mb-2">Firefox for Android (specific) modifications</h4>
+
+          <p>All general modifications can be made to Firefox for Android. These modifications are specific to the platform.</p><br>
+
+          <h5 class="text-secondary mb-2">browser.snippets.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable promotional Mozilla banners.</p><br>
+
+          <h5 class="text-secondary mb-2">device.camera.enabled = <span class="text-danger">false</span></h5>
+
+          <p>Disable access to the camera.</p><br>
+
+          <hr><br>
+
+          <!-- Button to initiate the loading of Disqus -->
+          <p>
+            <button id="disqus_load" class="btn btn-primary">Show comments</button>
+          </p>
+
+          <div id="disqus_thread">Comments are provided by Disqus. To respect user privacy, Disqus is only loaded on user prompt. <br><br>I recommend <a class="visible-link" href="https://github.com/gorhill/uBlock">uBlock Origin</a> to protect against Disqus tracking and advertising.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Location</h4>
+            <p class="lead mb-2"><a class="text-muted" href="https://www.youtube.com/watch?v=FtzYqgiuSDo">Melbourne</a>.</p>
+          </div>
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Around the Web</h4>
+            <ul class="list-inline mb-2">
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://github.com/aghorler">
+                  <i class="fa fa-fw fa-github"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://linkedin.com/in/aghorler">
+                  <i class="fa fa-fw fa-linkedin"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://www.facebook.com/aghorler">
+                  <i class="fa fa-fw fa-facebook"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h4 class="text-uppercase mb-4">About Me</h4>
+            <p class="lead mb-2">I am an Information Technology student.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div class="copyright py-4 text-center text-white">
+      <div class="container">
+        <small>Copyright &copy; Aaron Horler 2017, using <a class="text-muted" href="https://github.com/aghorler/aaronhorler.com">Freelancer</a>.</small>
+      </div>
+    </div>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-to-top d-lg-none position-fixed ">
+      <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="../js/freelancer.min.js"></script>
+    <script src="../js/custom.min.js"></script>
+
+</body>
+
+</html>

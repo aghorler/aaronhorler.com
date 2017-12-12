@@ -18,19 +18,10 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
 
     <title>Aaron Horler</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom fonts for this template -->
     <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <!-- Plugin CSS -->
-    <link href="./vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template -->
-    <link href="./css/freelancer.min.css" rel="stylesheet">
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
@@ -38,6 +29,9 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#1e1e1e">
+
+    <!-- Critical CSS -->
+    <style>body{font-family:'Lato'}h1,h2{font-weight:700;font-family:'Montserrat';word-wrap:break-word}hr.star-light{max-width:15rem;padding:0;text-align:center;border:none;border-top:solid .25rem;margin-top:2.5rem;margin-bottom:2.5rem}hr.star-light:after{position:relative;top:-.8em;display:inline-block;padding:0 .25em;content:'\f005';font-family:FontAwesome;font-size:2em}hr.star-light{border-color:#fff}hr.star-light:after{color:#fff;background-color:#102a45}section{padding:6rem 0}section h2{font-size:2.25rem;line-height:2rem}@media (min-width: 992px){section h2{font-size:3rem;line-height:2.5rem}}.scroll-to-top{z-index:1042;right:1rem;bottom:1rem;display:none}.scroll-to-top a{width:3.5rem;height:3.5rem;background-color:rgba(33,37,41,0.5);line-height:3.1rem}#mainNav{padding-top:1rem;padding-bottom:1rem;font-weight:700;font-family:'Montserrat'}#mainNav .navbar-brand{color:#fff}#mainNav .navbar-nav{margin-top:1rem;letter-spacing:.0625rem}#mainNav .navbar-nav li.nav-item a.nav-link{color:#fff}#mainNav .navbar-toggler{font-size:80%;padding:.8rem}@media (min-width: 992px){#mainNav{padding-top:1.5rem;padding-bottom:1.5rem}#mainNav .navbar-brand{font-size:2em}#mainNav .navbar-nav{margin-top:0}}header.masthead{padding-top:calc(6rem + 72px);padding-bottom:6rem}header.masthead h1{font-size:3rem;line-height:3rem}header.masthead h2{font-size:1.3rem;font-family:'Lato'}@media (min-width: 992px){header.masthead{padding-top:calc(6rem + 106px);padding-bottom:6rem}header.masthead h1{font-size:4.75em;line-height:4rem}header.masthead h2{font-size:1.75em}}.portfolio{margin-bottom:-15px}@media (min-width: 576px){.portfolio{margin-bottom:-30px}}a{color:#102a45}.bg-primary{background-color:#102a45!important}.bg-secondary{background-color:#1e1e1e!important}.text-secondary{color:#1e1e1e!important}</style>
   </head>
 
   <body id="page-top">
@@ -246,7 +240,7 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <!-- Plugin JavaScript -->
     <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="./vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <script src="./vendor/openpgpjs/openpgp.min.js"></script>
+    <script src="./vendor/openpgpjs/openpgp.min.js" defer></script>
 
     <!-- Contact Form JavaScript -->
     <script src="./js/jqBootstrapValidation.min.js"></script>
@@ -255,6 +249,13 @@ It's getting hard to be someone, but it all works out; it doesn't matter much to
     <!-- Custom scripts for this template -->
     <script src="./js/freelancer.min.js"></script>
     <script src="./js/custom.min.js"></script>
+
+    <!-- Deferred CSS -->
+    <noscript id="deferred-styles">
+      <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="./vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+      <link href="./css/freelancer.min.css" rel="stylesheet">
+    </noscript>
 
   </body>
 

@@ -1,3 +1,4 @@
+/* Function to spin Pluto. */
 function spinPluto(){
   if(pluto.style.transform == "" || pluto.style.transform == "rotateZ(-360deg)"){
     for(let i = 0; i < 361; i++){
@@ -17,10 +18,13 @@ function spinPluto(){
   }
 }
 
+/* Function to encrypt the contents of the contact form textarea using OpenPGP. */
 function encryptMessage(){
   if(window.crypto.getRandomValues){
     if(document.getElementById("message").value != ""){
-      var publicKeyString = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
+
+      /* My current OpenPGP public key. */
+      const publicKeyString = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
         "\n" +
         "mQINBFn+srEBEACrOL9kq4BDpHbn+dvab0qmXum1JSm3FpdhLWK/jyQUG1O9Xr11\n" +
         "4hf9K+Qaaj8EVTGXKz/VoF5sVwgmIRM+QKbQ5dhUuk3/kz6YrtaoUQNI9pDEdKYV\n" +
@@ -72,6 +76,7 @@ function encryptMessage(){
         "=szEj\n" +
         "-----END PGP PUBLIC KEY BLOCK-----";
 
+      /* Encrypt and replace the contents of the textarea. */
       var options = {
         data: document.getElementById("message").value,
         publicKeys: openpgp.key.readArmored(publicKeyString).keys
@@ -81,6 +86,7 @@ function encryptMessage(){
         document.getElementById("message").value = ciphertext.data;
       });
 
+      /* Disable encrypt button after first use. */
       $("#btnEncrypt").attr("disabled", true);
       document.getElementById("message").disabled = true;
       document.getElementById("btnEncrypt").title = "You may only encrypt once.";
@@ -92,6 +98,7 @@ function encryptMessage(){
   }
 }
 
+/* Function to load Disqus comments on user prompt. */
 function loadDisqus(){
   var script = document.createElement("script");
   script.src = "../js/disqus.min.js";
@@ -100,13 +107,25 @@ function loadDisqus(){
   document.getElementById("disqus_load").removeEventListener("click", loadDisqus);
 }
 
+/* Function to load deferred styles. */
+function loadDeferredStyles(){
+  var addStylesNode = document.getElementById("deferred-styles");
+  var replacement = document.createElement("div");
+  replacement.innerHTML = addStylesNode.textContent;
+  document.body.appendChild(replacement)
+  addStylesNode.parentElement.removeChild(addStylesNode);
+};
+
+/* Event handling for the index page. */
 if(document.getElementById("profile") !== null){
   var pluto = document.getElementById("profile");
 
+  window.addEventListener('load', loadDeferredStyles);
   pluto.addEventListener("click", spinPluto);
   document.addEventListener('DOMContentLoaded', spinPluto);
   document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);
 }
+/* Event handling for article pages. */
 else if(document.getElementById("disqus_load") !== null){
   document.getElementById("disqus_load").addEventListener("click", loadDisqus);
 }

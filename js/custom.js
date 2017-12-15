@@ -120,7 +120,6 @@ function loadDeferredStyles(){
 if(document.getElementById("profile") !== null){
   var pluto = document.getElementById("profile");
 
-  window.addEventListener('load', loadDeferredStyles);
   pluto.addEventListener("click", spinPluto);
   document.addEventListener('DOMContentLoaded', spinPluto);
   document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);
@@ -129,3 +128,5 @@ if(document.getElementById("profile") !== null){
 else if(document.getElementById("disqus_load") !== null){
   document.getElementById("disqus_load").addEventListener("click", loadDisqus);
 }
+
+window.addEventListener('load', loadDeferredStyles);

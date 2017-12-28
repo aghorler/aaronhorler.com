@@ -18,6 +18,12 @@ function spinPluto(){
   }
 }
 
+function printIP(){
+  $.get("https://aaronhorler.com/ip.php", function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+}
+
 /* Function to encrypt the contents of the contact form textarea using OpenPGP. */
 function encryptMessage(){
   if(window.crypto.getRandomValues){
@@ -122,6 +128,7 @@ if(document.getElementById("profile") !== null){
 
   pluto.addEventListener("click", spinPluto);
   document.addEventListener('DOMContentLoaded', spinPluto);
+  document.addEventListener('DOMContentLoaded', printIP);
   document.getElementById("btnEncrypt").addEventListener("click", encryptMessage);
 }
 /* Event handling for article pages. */

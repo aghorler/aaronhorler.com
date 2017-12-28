@@ -18,9 +18,10 @@ function spinPluto(){
   }
 }
 
+/* Function to print the visitor's IP address in the welcome message on the home page. */
 function printIP(){
-  $.get("https://aaronhorler.com/ip.php", function(data, status){
-    alert("Data: " + data + "\nStatus: " + status);
+  $.get("./ip.php", function(ip){
+    document.getElementById("welcome").innerHTML = "Welcome, " + ip + "!";
   });
 }
 

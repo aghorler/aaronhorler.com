@@ -7,9 +7,27 @@ Status:	Ignored
 
 --
 
+Name:	Ganesh Dhendu
+Email:	ganesh.d@way2online.co.in
+Date:	09-01-2018
+Method:	Email
+Offer:	Monetisation of WebRTC Leak Prevent.
+Status:	Ignored
+
+--
+
 Name:	Praper Ylian
 Email:	ylianpraper@yahoo.com
 Date:	10-01-2018
 Method:	Email
 Offer:	Monetisation of WebRTC Leak Prevent.
 Status:	Rejected
+
+--
+
+Name:	Ganesh Dhendu
+Email:	ganesh.d@way2online.co.in
+Date:	12-01-2018
+Method:	Email
+Offer:	Monetisation of WebRTC Leak Prevent (follow-up).
+Status:	Ignored

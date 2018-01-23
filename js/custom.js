@@ -107,21 +107,20 @@ function encryptMessage(){
 
 /* Function to load Disqus comments on user prompt. */
 function loadDisqus(){
-  var script = document.createElement("script");
-  script.src = "../js/disqus.min.js";
-  document.getElementById("content").appendChild(script);
+  var disqus_config = function(){
+    this.page.url = window.location.href;
+    this.page.identifier = window.location.pathname;
+  };
+
+  (function(){
+    var d = document, s = d.createElement('script');
+    s.src = 'https://aaronhorler.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
 
   document.getElementById("disqus_load").removeEventListener("click", loadDisqus);
 }
-
-/* Function to load deferred styles. */
-function loadDeferredStyles(){
-  var addStylesNode = document.getElementById("deferred-styles");
-  var replacement = document.createElement("div");
-  replacement.innerHTML = addStylesNode.textContent;
-  document.body.appendChild(replacement)
-  addStylesNode.parentElement.removeChild(addStylesNode);
-};
 
 /* Event handling for the index page. */
 if(document.getElementById("profile") !== null){
@@ -136,5 +135,3 @@ if(document.getElementById("profile") !== null){
 else if(document.getElementById("disqus_load") !== null){
   document.getElementById("disqus_load").addEventListener("click", loadDisqus);
 }
-
-window.addEventListener('load', loadDeferredStyles);

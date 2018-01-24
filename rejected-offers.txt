@@ -49,3 +49,12 @@ Date:	24-01-2018
 Method:	Email
 Offer:	Monetisation of WebRTC Leak Prevent (follow-up).
 Status:	Ignored
+
+--
+
+Name:	Julia Lobanova
+Email:	pr@optipic.io
+Date:	25-01-2018
+Method:	Email
+Offer:	Monetisation of WebRTC Leak Prevent Toggle.
+Status:	Ignored

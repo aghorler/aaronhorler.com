@@ -40,3 +40,12 @@ Date:	17-01-2018
 Method:	Email
 Offer:	Monetisation of WebRTC Leak Prevent (follow-up).
 Status:	Ignored
+
+--
+
+Name:	Ganesh Dhendu
+Email:	ganesh.d@way2online.co.in
+Date:	24-01-2018
+Method:	Email
+Offer:	Monetisation of WebRTC Leak Prevent (follow-up).
+Status:	Ignored

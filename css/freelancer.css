@@ -399,4 +399,5 @@ code.code-scroll {
 
 #btnEncrypt {
   color: white;
+  cursor: pointer;
 }

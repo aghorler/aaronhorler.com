@@ -124,7 +124,7 @@ section h2 {
 }
 
 #mainNav .navbar-nav li.nav-item a.nav-link.active {
-  color: #102a45;
+  color: #0062cc;
 }
 
 #mainNav .navbar-toggler {
@@ -400,4 +400,13 @@ code.code-scroll {
 #btnEncrypt {
   color: white;
   cursor: pointer;
+}
+
+.el-link {
+  color: #f16624;
+}
+
+.el-link:hover, .el-link:focus, .el-link:active {
+  color: #dd510e;
+  text-decoration: none;
 }

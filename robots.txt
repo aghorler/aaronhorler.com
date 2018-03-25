@@ -1,9 +1,10 @@
 User-Agent: *
 Allow: /$
 Allow: /articles
-Allow: /sitemap.xml
-Allow: /public.asc
+Allow: /img/profile.png
 Allow: /privacy.asc
+Allow: /public.asc
+Allow: /sitemap.xml
 Disallow: /
 
 Sitemap: https://aaronhorler.com/sitemap.xml

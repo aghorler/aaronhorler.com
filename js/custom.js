@@ -26,7 +26,7 @@ function printIP(){
 }
 
 /* Function to encrypt the contents of the contact form textarea using OpenPGP. */
-function encryptMessage(){
+const encryptMessage  = async() => {
   if(window.crypto.getRandomValues){
     if(document.getElementById("message").value != ""){
 
@@ -85,8 +85,8 @@ function encryptMessage(){
 
       /* Encrypt and replace the contents of the textarea. */
       var options = {
-        data: document.getElementById("message").value,
-        publicKeys: openpgp.key.readArmored(publicKeyString).keys
+        message: openpgp.message.fromText(document.getElementById("message").value),
+        publicKeys: (await openpgp.key.readArmored(publicKeyString)).keys
       };
 
       openpgp.encrypt(options).then(function(ciphertext){
